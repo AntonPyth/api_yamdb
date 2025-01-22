@@ -60,6 +60,12 @@ class Title(models.Model):
         related_name='categorie',
         verbose_name="Категория"
     )
+    '''description = models.TextField(blank=True, verbose_name="Описание")
+    rating = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Рейтинг",
+        validators=[MinValueValidator(1), MaxValueValidator(10)]
+    )'''
 
     class Meta:
         verbose_name = "Произведение"
