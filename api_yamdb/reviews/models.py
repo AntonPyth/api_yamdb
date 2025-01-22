@@ -49,7 +49,14 @@ class Title(models.Model):
     )
     category = models.ForeignKey(
         Category,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        # При удалении объекта произведения Title должны удаляться
+        # Все отзывы к этому произведению и комментарии к ним.
+        # Использует on_delete=models.SET_NULL,
+        # Чтобы при удалении категории у произведения значение категории
+        # Становилось NULL, а не удалялось произведение.
+        null=True,
+        blank=True,
         related_name='categorie',
         verbose_name="Категория"
     )
@@ -73,7 +80,11 @@ class Genre_title(models.Model):
     )
     genre = models.ForeignKey(
         Genre,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        # При удалении объекта жанра (Genre) не нужно удалять
+        # Связанные с этим жанром произведения.
+        null=True,
+        blank=True,
         related_name='genre',
         verbose_name="Жанр произведения"
     )
@@ -87,4 +98,4 @@ class Genre_title(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.title} имеет {self.genre}"
+        return f"Произведение {self.title} относится к жанру {self.genre}"
