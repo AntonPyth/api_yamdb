@@ -21,13 +21,13 @@ ___
 3. __Cоздать и активировать виртуальное окружение внутри проекта:__
 
 
-- [X] python3 -m venv env
+- [X] python -m venv env
 
 ___
 4. **Активировать созданное виртуальное окружение:**
 
 
-- [X] . env/bin/activate
+- [X] . venv/Scripts/Activate
 
 ___
 5. **Обновить pip:**
@@ -45,10 +45,10 @@ ___
 7. **Выполнить миграции:**
 
 
-- [X] python3 manage.py migrate
+- [X] python manage.py migrate
 
 ___
 8. **Запустить проект:**
 
 
-- [X] python3 manage.py runserver
+- [X] python manage.py runserver
