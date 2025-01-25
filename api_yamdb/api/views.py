@@ -1,3 +1,8 @@
+
+from rest_framework.viewsets import ModelViewSet  # , ReadOnlyModelViewSet
+from reviews.models import Category, Genre, Title
+from .serializers import CategorySerializer, GenreSerializer, TitleSerializer
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -9,6 +14,27 @@ from .serializers import (
     UpdateUsersSerializer, TokenSerializer
 )
 from .utils import send_verification_email, generate_verification_code
+
+
+class CategoryViewSet(ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+class GenreViewSet(ModelViewSet):
+    queryset = Genre.objects.all()
+    serializer_class = GenreSerializer
+
+
+class TitleViewSet(ModelViewSet):
+    queryset = (
+        Title.objects.select_related('category').prefetch_related('genre')
+    )
+    serializer_class = TitleSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save()
 
 
 User = get_user_model()
@@ -68,3 +94,4 @@ class UsersViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+
