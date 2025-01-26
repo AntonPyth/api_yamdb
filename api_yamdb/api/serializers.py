@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from reviews.models import Category, Genre, Title
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
@@ -7,14 +8,19 @@ from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.tokens import AccessToken
 from .validators import validate_username
 
+
 User = get_user_model()
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ['name', 'slug']
 
+    def validate_slug(self, value):
+        if Category.objects.filter(slug=value).exists():
+            raise serializers.ValidationError("Этот slug уже существует. Выберите другой.")
+        return value
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:

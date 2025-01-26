@@ -4,10 +4,11 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField(
-        max_length=200,
-        verbose_name="Название категории"
+        max_length=256,
+        verbose_name="Название категории",
+        blank=False
     )
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=50, unique=True, blank=False)
 
     class Meta:
         verbose_name = "Категория"
@@ -23,10 +24,11 @@ class Category(models.Model):
 
 class Genre(models.Model):
     name = models.CharField(
-        max_length=200,
-        verbose_name="Название жанра"
+        max_length=256,
+        verbose_name="Название жанра",
+        blank=False
     )
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=50, unique=True, blank=False)
 
     class Meta:
         verbose_name = "Жанр"
@@ -42,11 +44,13 @@ class Genre(models.Model):
 
 class Title(models.Model):
     name = models.CharField(
-        max_length=200,
-        verbose_name="Название произведения"
+        max_length=256,
+        verbose_name="Название произведения",
+        blank=False
     )
     year = models.PositiveIntegerField(
-        verbose_name="Год создания"
+        verbose_name="Год создания",
+        blank=False
     )
     category = models.ForeignKey(
         Category,
@@ -168,3 +172,11 @@ class ReviewsUser(AbstractUser):
     @property
     def is_user(self):
         return self.role == self.USER
+
+
+    '''description = models.TextField(blank=True, verbose_name="Описание")
+    rating = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Рейтинг",
+        validators=[MinValueValidator(1), MaxValueValidator(10)]
+    )'''
