@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 from reviews.models import Category, Genre, Title
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
@@ -19,13 +18,23 @@ class CategorySerializer(serializers.ModelSerializer):
 
     def validate_slug(self, value):
         if Category.objects.filter(slug=value).exists():
-            raise serializers.ValidationError("Этот slug уже существует. Выберите другой.")
+            raise serializers.ValidationError(
+                "Этот slug уже существует. Выберите другой."
+            )
         return value
+
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = '__all__'
+        fields = ['name', 'slug']
+
+    def validate_slug(self, value):
+        if Genre.objects.filter(slug=value).exists():
+            raise serializers.ValidationError(
+                "Этот slug уже существует. Выберите другой."
+            )
+        return value
 
 
 class TitleSerializer(serializers.ModelSerializer):

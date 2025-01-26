@@ -19,10 +19,8 @@ from .serializers import (
 from rest_framework import mixins
 
 
-class CategoryViewSet(mixins.CreateModelMixin,
-                   mixins.DestroyModelMixin,
-                   mixins.ListModelMixin,
-                   viewsets.GenericViewSet):
+class CategoryViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin,
+                      mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [IsAdminOrReadOnly]
@@ -46,7 +44,7 @@ class CategoryViewSet(mixins.CreateModelMixin,
         return super().create(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
-        if not request.user.is_admin:  # Изменили на is_admin, так как так у вас в модели
+        if not request.user.is_admin:
             return Response(
                 {"detail": "У вас нет прав для выполнения этого действия."},
                 status=status.HTTP_400_BAD_REQUEST
@@ -54,10 +52,38 @@ class CategoryViewSet(mixins.CreateModelMixin,
         return super().destroy(request, *args, **kwargs)
 
 
-class GenreViewSet(ModelViewSet):
+class GenreViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, 
+                   mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
     permission_classes = [IsAdminOrReadOnly]
+    pagination_class = LimitOffsetPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
+    lookup_field = 'slug'
+
+    def create(self, request, *args, **kwargs):
+        name = request.data.get('name')
+        slug = request.data.get('slug')
+
+        # Проверка на отсутствие обязательных полей
+        if not name or not slug:
+            raise ValidationError({'detail': 'Поле `name` и `slug` обязательны.'})
+
+        # Проверка на уникальность slug
+        if Category.objects.filter(slug=slug).exists():
+            raise ValidationError({'slug': 'Этот slug уже существует. Выберите другой.'})
+
+        return super().create(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        if not request.user.is_admin:
+            return Response(
+                {"detail": "У вас нет прав для выполнения этого действия."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        return super().destroy(request, *args, **kwargs)
+
 
 
 class TitleViewSet(ModelViewSet):
