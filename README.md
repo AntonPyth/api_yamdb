@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Стек технологий:
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) **- Python 3.9**
@@ -61,6 +60,3 @@ ___
 * Бледных Павел
 * Васильева Наталья
 * Кочуев Антон
-=======
-Проект YaMDb
->>>>>>> a56ff2b8392f952769604776dd236f7bd4a01027
