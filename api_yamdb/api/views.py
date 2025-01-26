@@ -1,8 +1,8 @@
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import ValidationError
-from reviews.models import Category, Genre, Title
-from .serializers import CategorySerializer, GenreSerializer, TitleSerializer
+from reviews.models import Category, Genre, Titles
+from .serializers import CategorySerializer, GenreSerializer, TitlesSerializer
 from .utils import send_verification_email, generate_verification_code
 from rest_framework.pagination import LimitOffsetPagination
 from django.contrib.auth import get_user_model
@@ -15,7 +15,6 @@ from .serializers import (
     UserRegistrationSerializer, UsersSerializer,
     UpdateUsersSerializer, TokenSerializer
 )
-
 from rest_framework import mixins
 
 
@@ -52,7 +51,7 @@ class CategoryViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin,
         return super().destroy(request, *args, **kwargs)
 
 
-class GenreViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, 
+class GenreViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin,
                    mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
@@ -85,16 +84,37 @@ class GenreViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin,
         return super().destroy(request, *args, **kwargs)
 
 
-
-class TitleViewSet(ModelViewSet):
-    queryset = (
-        Title.objects.select_related('category').prefetch_related('genre')
-    )
-    serializer_class = TitleSerializer
+class TitlesViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, 
+                    mixins.ListModelMixin, viewsets.GenericViewSet):
+    queryset = Titles.objects.all()
+    serializer_class = TitlesSerializer
     permission_classes = [IsAdminOrReadOnly]
+    pagination_class = LimitOffsetPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'genre', 'category', 'year']
+    lookup_field = 'id'
 
-    def perform_create(self, serializer):
-        serializer.save()
+    def create(self, request, *args, **kwargs):
+        name = request.data.get('name')
+        year = request.data.get('year')
+        genre = request.data.get('genre')
+        category = request.data.get('category')
+
+        # Проверка на заполнение обязательных полей
+        if not name or not year or not genre or not category:
+            raise ValidationError(
+                {'detail': 'Поля `name`, `year`, `genre` и `category` являются обязательными.'}
+            )
+
+        return super().create(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        if not request.user.is_admin:
+            return Response(
+                {"detail": "У вас нет прав для выполнения этого действия."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        return super().destroy(request, *args, **kwargs)
 
 
 User = get_user_model()

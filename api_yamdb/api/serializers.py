@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from reviews.models import Category, Genre, Title
+from reviews.models import Category, Genre, Titles, Genre_title
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
@@ -37,13 +37,29 @@ class GenreSerializer(serializers.ModelSerializer):
         return value
 
 
-class TitleSerializer(serializers.ModelSerializer):
-    category = CategorySerializer(read_only=True)
-    genre = GenreSerializer(many=True, read_only=True)
+class TitlesSerializer(serializers.ModelSerializer):
+    category = serializers.SlugRelatedField(
+        slug_field='slug', queryset=Category.objects.all(), required=False
+    )
+    genre = GenreSerializer(required=False, many=True)
 
     class Meta:
-        model = Title
-        fields = '__all__'
+        fields = ('id', 'name', 'genre', 'category', 'year')
+        model = Titles
+
+    def create(self, validated_data):
+        if 'genre' not in self.initial_data:
+            title = Titles.objects.create(**validated_data)
+            return title
+        else:
+            genre = validated_data.pop('genre')
+            title = Titles.objects.create(**validated_data)
+            for one_genre in genre:
+                current_genre, status = Genre.objects.get_or_create(
+                    **one_genre
+                )
+                Genre_title.objects.create(genre=current_genre, title=title)
+            return title
 
 
 class TokenSerializer(serializers.Serializer):

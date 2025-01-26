@@ -1,5 +1,15 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils.timezone import now
+
+
+def validate_year(value):
+    current_year = now().year
+    if value > current_year:
+        raise ValidationError(
+            f'Год не может быть больше текущего ({current_year}).'
+        )
 
 
 class Category(models.Model):
@@ -42,7 +52,7 @@ class Genre(models.Model):
         return self.name
 
 
-class Title(models.Model):
+class Titles(models.Model):
     name = models.CharField(
         max_length=256,
         verbose_name="Название произведения",
@@ -50,7 +60,8 @@ class Title(models.Model):
     )
     year = models.PositiveIntegerField(
         verbose_name="Год создания",
-        blank=False
+        blank=False,
+        validators=[validate_year]
     )
     category = models.ForeignKey(
         Category,
@@ -61,12 +72,12 @@ class Title(models.Model):
         # Чтобы при удалении категории у произведения значение категории
         # Становилось NULL, а не удалялось произведение.
         null=True,
-        blank=True,
+        blank=False,
         related_name='categorie',
         verbose_name="Категория"
     )
-    '''description = models.TextField(blank=True, verbose_name="Описание")
-    rating = models.PositiveIntegerField(
+    description = models.TextField(blank=True, verbose_name="Описание")
+    '''rating = models.PositiveIntegerField(
         default=0,
         verbose_name="Рейтинг",
         validators=[MinValueValidator(1), MaxValueValidator(10)]
@@ -84,7 +95,7 @@ class Title(models.Model):
 
 class Genre_title(models.Model):
     title = models.ForeignKey(
-        Title,
+        Titles,
         on_delete=models.CASCADE,
         related_name='title',
         verbose_name="Название произведения"
@@ -95,7 +106,7 @@ class Genre_title(models.Model):
         # При удалении объекта жанра (Genre) не нужно удалять
         # Связанные с этим жанром произведения.
         null=True,
-        blank=True,
+        blank=False,
         related_name='genre',
         verbose_name="Жанр произведения"
     )
