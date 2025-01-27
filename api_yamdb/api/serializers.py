@@ -1,8 +1,7 @@
 from rest_framework import serializers
-from reviews.models import Category, Genre, Title
+from reviews.models import Category, Genre, Title, Review, Comment
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.tokens import AccessToken
 from .validators import validate_username
@@ -99,3 +98,17 @@ class UpdateUsersSerializer(UserRegistrationSerializer):
         fields = (
             'username', 'email', 'first_name', 'last_name', 'bio',
         )
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    comments = CommentSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = Review
+        fields = '__all__'
