@@ -1,7 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import ValidationError
 from reviews.models import Category, Genre, Title, Review, Comment
-from .serializers import CategorySerializer, GenreSerializer, TitleSerializer
 # from .utils import send_verification_email, generate_verification_code
 from rest_framework.pagination import LimitOffsetPagination
 from django.contrib.auth import get_user_model
@@ -11,6 +10,7 @@ from rest_framework import status, filters, viewsets, mixins, permissions
 from rest_framework.decorators import action
 from .permissions import IsAdminOrReadOnly, IsAdmin
 from .serializers import (
+    CategorySerializer, GenreSerializer, TitleSerializer,
     UserRegistrationSerializer, UsersSerializer,
     UpdateUsersSerializer, TokenSerializer,
     ReviewSerializer, CommentSerializer
