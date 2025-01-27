@@ -101,14 +101,29 @@ class UpdateUsersSerializer(UserRegistrationSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    review = serializers.SlugRelatedField(
+        slug_field='id', read_only=True
+    )
+    author = serializers.SlugRelatedField(
+        slug_field='username', read_only=True
+    )
+
     class Meta:
         model = Comment
-        fields = '__all__'
+        fields = ('id', 'review', 'author', 'text', 'pub_date')
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    comments = CommentSerializer(many=True, read_only=True)
-    
+    comments = CommentSerializer(many=True)
+    author = serializers.SlugRelatedField(
+        slug_field='username',
+        read_only=True
+    )
+    title = serializers.SlugRelatedField(
+        slug_field='name',
+        read_only=True
+    )
+  
     class Meta:
         model = Review
-        fields = '__all__'
+        fields = ['id', 'author', 'title', 'text', 'score', 'pub_date']
