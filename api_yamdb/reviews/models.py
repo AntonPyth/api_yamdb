@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.timezone import now
+import json
 
 
 def validate_year(value):
@@ -30,6 +31,9 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def to_json(self):
+        return json.loads(f'{{"name": "{self.name}", "slug": "{self.slug}"}}')
 
 
 class Genre(models.Model):
@@ -50,6 +54,10 @@ class Genre(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def to_json(self):
+        return json.loads(f'{{"name": "{self.name}", "slug": "{self.slug}"}}')
+
 
 
 class Titles(models.Model):
@@ -77,6 +85,7 @@ class Titles(models.Model):
         verbose_name="Категория"
     )
     description = models.TextField(blank=True, verbose_name="Описание")
+    genre = models.ManyToManyField(Genre, through='Genre_title')
     '''rating = models.PositiveIntegerField(
         default=0,
         verbose_name="Рейтинг",

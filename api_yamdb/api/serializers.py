@@ -36,30 +36,22 @@ class GenreSerializer(serializers.ModelSerializer):
             )
         return value
 
+class SlugJsonRelatedField(serializers.SlugRelatedField):
+    def __init__(self, slug_field=None, **kwargs):
+        super().__init__(slug_field, **kwargs)
+
+    def to_representation(self, obj):
+        return obj.to_json()
 
 class TitlesSerializer(serializers.ModelSerializer):
-    category = serializers.SlugRelatedField(
-        slug_field='slug', queryset=Category.objects.all(), required=False
-    )
-    genre = GenreSerializer(required=False, many=True)
+    category = SlugJsonRelatedField(
+        slug_field='slug', queryset=Category.objects.all())
+    
+    genre = SlugJsonRelatedField(slug_field='slug', queryset=Genre.objects.all(), many=True)
 
     class Meta:
-        fields = ('id', 'name', 'genre', 'category', 'year')
+        fields = ('id', 'name', 'genre', 'category', 'year', 'description')
         model = Titles
-
-    def create(self, validated_data):
-        if 'genre' not in self.initial_data:
-            title = Titles.objects.create(**validated_data)
-            return title
-        else:
-            genre = validated_data.pop('genre')
-            title = Titles.objects.create(**validated_data)
-            for one_genre in genre:
-                current_genre, status = Genre.objects.get_or_create(
-                    **one_genre
-                )
-                Genre_title.objects.create(genre=current_genre, title=title)
-            return title
 
 
 class TokenSerializer(serializers.Serializer):

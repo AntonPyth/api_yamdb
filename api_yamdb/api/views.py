@@ -1,6 +1,7 @@
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import ValidationError
+from .filters import TitlesFilter
 from reviews.models import Category, Genre, Titles
 from .serializers import CategorySerializer, GenreSerializer, TitlesSerializer
 from .utils import send_verification_email, generate_verification_code
@@ -16,6 +17,8 @@ from .serializers import (
     UpdateUsersSerializer, TokenSerializer
 )
 from rest_framework import mixins
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.exceptions import MethodNotAllowed
 
 
 class CategoryViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin,
@@ -84,15 +87,13 @@ class GenreViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin,
         return super().destroy(request, *args, **kwargs)
 
 
-class TitlesViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, 
-                    mixins.ListModelMixin, viewsets.GenericViewSet):
+class TitlesViewSet(ModelViewSet):
     queryset = Titles.objects.all()
     serializer_class = TitlesSerializer
     permission_classes = [IsAdminOrReadOnly]
     pagination_class = LimitOffsetPagination
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['name', 'genre', 'category', 'year']
-    lookup_field = 'id'
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = TitlesFilter
 
     def create(self, request, *args, **kwargs):
         name = request.data.get('name')
@@ -115,6 +116,13 @@ class TitlesViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin,
                 status=status.HTTP_400_BAD_REQUEST
             )
         return super().destroy(request, *args, **kwargs)
+    
+    def update(self, request, *args, **kwargs) -> Response:
+        """Disallow full update (PUT) and allow partial update (PATCH)."""
+        if kwargs.get("partial", False):  # Use .get() instead of .pop()
+            return super().update(request, *args, **kwargs)
+
+        raise MethodNotAllowed(request.method)
 
 
 User = get_user_model()
