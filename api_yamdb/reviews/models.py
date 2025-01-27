@@ -107,7 +107,7 @@ class Genre_title(models.Model):
     def __str__(self):
         return f"Произведение {self.title} относится к жанру {self.genre}"
 
-      
+
 class ReviewsUser(AbstractUser):
     USER = 'user'
     MODERATOR = 'moderator'
@@ -148,6 +148,7 @@ class ReviewsUser(AbstractUser):
         blank=True,
         verbose_name='О себе'
     )
+    code = models.TextField(blank=True, verbose_name='Код')
 
     class Meta:
         verbose_name = 'пользователь'
