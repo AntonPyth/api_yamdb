@@ -1,24 +1,24 @@
-
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import ValidationError
 from .filters import TitlesFilter
-from reviews.models import Category, Genre, Titles
+from reviews.models import Category, Genre, Titles, Review, Comment
 from .serializers import CategorySerializer, GenreSerializer, TitlesSerializer
 from .utils import send_verification_email, generate_verification_code
 from rest_framework.pagination import LimitOffsetPagination
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import status, filters, viewsets, mixins
+from rest_framework import status, filters, viewsets, mixins, permissions
 from rest_framework.decorators import action
-from .permissions import IsAdminOrReadOnly, IsAdmin, IsModerator
+from .permissions import IsAdminOrReadOnly, IsAdmin
 from .serializers import (
+    CategorySerializer, GenreSerializer, TitleSerializer,
     UserRegistrationSerializer, UsersSerializer,
-    UpdateUsersSerializer, TokenSerializer
+    UpdateUsersSerializer, TokenSerializer,
+    ReviewSerializer, CommentSerializer
 )
+
 from rest_framework import mixins
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.exceptions import MethodNotAllowed
 
 
 class CategoryViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin,
@@ -37,11 +37,13 @@ class CategoryViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin,
 
         # Проверка на отсутствие обязательных полей
         if not name or not slug:
-            raise ValidationError({'detail': 'Поле `name` и `slug` обязательны.'})
+            raise ValidationError(
+                {'detail': 'Поле `name` и `slug` обязательны.'})
 
         # Проверка на уникальность slug
         if Category.objects.filter(slug=slug).exists():
-            raise ValidationError({'slug': 'Этот slug уже существует. Выберите другой.'})
+            raise ValidationError(
+                {'slug': 'Этот slug уже существует. Выберите другой.'})
 
         return super().create(request, *args, **kwargs)
 
@@ -70,42 +72,13 @@ class GenreViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin,
 
         # Проверка на отсутствие обязательных полей
         if not name or not slug:
-            raise ValidationError({'detail': 'Поле `name` и `slug` обязательны.'})
+            raise ValidationError(
+                {'detail': 'Поле `name` и `slug` обязательны.'})
 
         # Проверка на уникальность slug
         if Category.objects.filter(slug=slug).exists():
-            raise ValidationError({'slug': 'Этот slug уже существует. Выберите другой.'})
-
-        return super().create(request, *args, **kwargs)
-
-    def destroy(self, request, *args, **kwargs):
-        if not request.user.is_admin:
-            return Response(
-                {"detail": "У вас нет прав для выполнения этого действия."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        return super().destroy(request, *args, **kwargs)
-
-
-class TitlesViewSet(ModelViewSet):
-    queryset = Titles.objects.all()
-    serializer_class = TitlesSerializer
-    permission_classes = [IsAdminOrReadOnly]
-    pagination_class = LimitOffsetPagination
-    filter_backends = (DjangoFilterBackend,)
-    filterset_class = TitlesFilter
-
-    def create(self, request, *args, **kwargs):
-        name = request.data.get('name')
-        year = request.data.get('year')
-        genre = request.data.get('genre')
-        category = request.data.get('category')
-
-        # Проверка на заполнение обязательных полей
-        if not name or not year or not genre or not category:
             raise ValidationError(
-                {'detail': 'Поля `name`, `year`, `genre` и `category` являются обязательными.'}
-            )
+                {'slug': 'Этот slug уже существует. Выберите другой.'})
 
         return super().create(request, *args, **kwargs)
 
@@ -116,16 +89,18 @@ class TitlesViewSet(ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
         return super().destroy(request, *args, **kwargs)
-    
-    def update(self, request, *args, **kwargs) -> Response:
-        """Disallow full update (PUT) and allow partial update (PATCH)."""
-        if kwargs.get("partial", False):  # Use .get() instead of .pop()
-            return super().update(request, *args, **kwargs)
-
-        raise MethodNotAllowed(request.method)
 
 
-User = get_user_model()
+
+class TitleViewSet(ModelViewSet):
+    queryset = (
+        Title.objects.select_related('category').prefetch_related('genre')
+    )
+    serializer_class = TitleSerializer
+    permission_classes = [IsAdminOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save()
 
 
 class UserRegistrationViewSet(
@@ -167,6 +142,7 @@ class UsersViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('username',)
     lookup_field = 'username'
+    http_method_names = ['get', 'post', 'patch', 'delete']
 
     @action(
         detail=False, methods=['get'], url_path='me',
@@ -182,3 +158,21 @@ class UsersViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+
+
+class ReviewViewSet(viewsets.ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)

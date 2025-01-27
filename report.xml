@@ -1,0 +1,1549 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="28" skipped="0" tests="80" time="20.404" timestamp="2025-01-27T02:44:04.013759" hostname="DESKTOP-5VTK3DO"><testcase classname="tests.test_00_user_registration.Test00UserRegistration" name="test_00_nodata_signup" time="0.474" /><testcase classname="tests.test_00_user_registration.Test00UserRegistration" name="test_00_invalid_data_signup" time="0.031" /><testcase classname="tests.test_00_user_registration.Test00UserRegistration" name="test_00_singup_length_and_simbols_validation[data0-messege0]" time="0.028" /><testcase classname="tests.test_00_user_registration.Test00UserRegistration" name="test_00_singup_length_and_simbols_validation[data1-messege1]" time="0.054"><failure message="AssertionError: Проверьте, что при обработке POST-запроса к `/api/v1/auth/signup/` проверяется длина поля `username`: его содержимое не должно быть длиннее 150 символов.&#10;assert 200 == &lt;HTTPStatus.BAD_REQUEST: 400&gt;&#10;  +200&#10;  -&lt;HTTPStatus.BAD_REQUEST: 400&gt;">self = &lt;tests.test_00_user_registration.Test00UserRegistration object at 0x000001CF10B328B0&gt;
+client = &lt;django.test.client.Client object at 0x000001CF10B2DA90&gt;
+data = {'email': 'valid-email@yamdb.fake', 'username': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'}
+messege = ('Проверьте, что при обработке {request_method}-запроса к `{url}` проверяется длина поля `username`: его содержимое не должно быть длиннее 150 символов.',)
+django_user_model = &lt;class 'reviews.models.ReviewsUser'&gt;
+
+    @pytest.mark.parametrize(
+        'data,messege', invalid_data_for_username_and_email_fields
+    )
+    def test_00_singup_length_and_simbols_validation(self, client,
+                                                     data, messege,
+                                                     django_user_model):
+        request_method = 'POST'
+        users_count = django_user_model.objects.count()
+        response = client.post(self.URL_SIGNUP, data=data)
+&gt;       assert response.status_code == HTTPStatus.BAD_REQUEST, (
+            messege[0].format(
+                url=self.URL_SIGNUP, request_method=request_method
+            )
+        )
+E       AssertionError: Проверьте, что при обработке POST-запроса к `/api/v1/auth/signup/` проверяется длина поля `username`: его содержимое не должно быть длиннее 150 символов.
+E       assert 200 == &lt;HTTPStatus.BAD_REQUEST: 400&gt;
+E         +200
+E         -&lt;HTTPStatus.BAD_REQUEST: 400&gt;
+
+tests\test_00_user_registration.py:96: AssertionError</failure></testcase><testcase classname="tests.test_00_user_registration.Test00UserRegistration" name="test_00_singup_length_and_simbols_validation[data2-messege2]" time="0.033" /><testcase classname="tests.test_00_user_registration.Test00UserRegistration" name="test_00_valid_data_user_signup" time="0.026" /><testcase classname="tests.test_00_user_registration.Test00UserRegistration" name="test_00_valid_data_admin_create_user" time="0.192" /><testcase classname="tests.test_00_user_registration.Test00UserRegistration" name="test_00_admin_create_user_length_and_simbols_validation[data0-messege0]" time="0.155" /><testcase classname="tests.test_00_user_registration.Test00UserRegistration" name="test_00_admin_create_user_length_and_simbols_validation[data1-messege1]" time="0.159"><failure message="AssertionError: Проверьте, что при обработке POST-запроса к `/api/v1/users/` проверяется длина поля `username`: его содержимое не должно быть длиннее 150 символов.&#10;assert 201 == &lt;HTTPStatus.BAD_REQUEST: 400&gt;&#10;  +201&#10;  -&lt;HTTPStatus.BAD_REQUEST: 400&gt;">self = &lt;tests.test_00_user_registration.Test00UserRegistration object at 0x000001CF10A562E0&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF10A43040&gt;
+data = {'email': 'valid-email@yamdb.fake', 'username': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'}
+messege = ('Проверьте, что при обработке {request_method}-запроса к `{url}` проверяется длина поля `username`: его содержимое не должно быть длиннее 150 символов.',)
+django_user_model = &lt;class 'reviews.models.ReviewsUser'&gt;
+
+    @pytest.mark.parametrize(
+        'data,messege', invalid_data_for_user_patch_and_creation
+    )
+    def test_00_admin_create_user_length_and_simbols_validation(
+            self, admin_client, data, messege, django_user_model
+    ):
+        request_method = 'POST'
+        users_count = django_user_model.objects.count()
+        response = admin_client.post(self.URL_ADMIN_CREATE_USER, data=data)
+&gt;       assert response.status_code == HTTPStatus.BAD_REQUEST, (
+            messege[0].format(
+                url=self.URL_ADMIN_CREATE_USER, request_method=request_method
+            )
+        )
+E       AssertionError: Проверьте, что при обработке POST-запроса к `/api/v1/users/` проверяется длина поля `username`: его содержимое не должно быть длиннее 150 символов.
+E       assert 201 == &lt;HTTPStatus.BAD_REQUEST: 400&gt;
+E         +201
+E         -&lt;HTTPStatus.BAD_REQUEST: 400&gt;
+
+tests\test_00_user_registration.py:211: AssertionError</failure></testcase><testcase classname="tests.test_00_user_registration.Test00UserRegistration" name="test_00_admin_create_user_length_and_simbols_validation[data2-messege2]" time="0.160" /><testcase classname="tests.test_00_user_registration.Test00UserRegistration" name="test_00_admin_create_user_length_and_simbols_validation[data3-messege3]" time="0.159"><failure message="AssertionError: Проверьте, что при обработке POST-запроса к `/api/v1/users/` проверяется длина поля `first_name`: его содержимое не должно быть длиннее 150 символов.&#10;assert 201 == &lt;HTTPStatus.BAD_REQUEST: 400&gt;&#10;  +201&#10;  -&lt;HTTPStatus.BAD_REQUEST: 400&gt;">self = &lt;tests.test_00_user_registration.Test00UserRegistration object at 0x000001CF10DC5FD0&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF10B2DA30&gt;
+data = {'email': 'valid-email@yamdb.fake', 'first_name': 'toolonggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg', 'username': 'validname'}
+messege = ('Проверьте, что при обработке POST-запроса к `{url}` проверяется длина поля `first_name`: его содержимое не должно быть длиннее 150 символов.',)
+django_user_model = &lt;class 'reviews.models.ReviewsUser'&gt;
+
+    @pytest.mark.parametrize(
+        'data,messege', invalid_data_for_user_patch_and_creation
+    )
+    def test_00_admin_create_user_length_and_simbols_validation(
+            self, admin_client, data, messege, django_user_model
+    ):
+        request_method = 'POST'
+        users_count = django_user_model.objects.count()
+        response = admin_client.post(self.URL_ADMIN_CREATE_USER, data=data)
+&gt;       assert response.status_code == HTTPStatus.BAD_REQUEST, (
+            messege[0].format(
+                url=self.URL_ADMIN_CREATE_USER, request_method=request_method
+            )
+        )
+E       AssertionError: Проверьте, что при обработке POST-запроса к `/api/v1/users/` проверяется длина поля `first_name`: его содержимое не должно быть длиннее 150 символов.
+E       assert 201 == &lt;HTTPStatus.BAD_REQUEST: 400&gt;
+E         +201
+E         -&lt;HTTPStatus.BAD_REQUEST: 400&gt;
+
+tests\test_00_user_registration.py:211: AssertionError</failure></testcase><testcase classname="tests.test_00_user_registration.Test00UserRegistration" name="test_00_admin_create_user_length_and_simbols_validation[data4-messege4]" time="0.155"><failure message="AssertionError: Проверьте, что при обработке POST-запроса к `/api/v1/users/` проверяется длина поля `last_name`: его содержимое не должно быть длиннее 150 символов.&#10;assert 201 == &lt;HTTPStatus.BAD_REQUEST: 400&gt;&#10;  +201&#10;  -&lt;HTTPStatus.BAD_REQUEST: 400&gt;">self = &lt;tests.test_00_user_registration.Test00UserRegistration object at 0x000001CF10A43640&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF10DFA3D0&gt;
+data = {'email': 'valid-email@yamdb.fake', 'last_name': 'toolonggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg', 'username': 'validname'}
+messege = ('Проверьте, что при обработке POST-запроса к `{url}` проверяется длина поля `last_name`: его содержимое не должно быть длиннее 150 символов.',)
+django_user_model = &lt;class 'reviews.models.ReviewsUser'&gt;
+
+    @pytest.mark.parametrize(
+        'data,messege', invalid_data_for_user_patch_and_creation
+    )
+    def test_00_admin_create_user_length_and_simbols_validation(
+            self, admin_client, data, messege, django_user_model
+    ):
+        request_method = 'POST'
+        users_count = django_user_model.objects.count()
+        response = admin_client.post(self.URL_ADMIN_CREATE_USER, data=data)
+&gt;       assert response.status_code == HTTPStatus.BAD_REQUEST, (
+            messege[0].format(
+                url=self.URL_ADMIN_CREATE_USER, request_method=request_method
+            )
+        )
+E       AssertionError: Проверьте, что при обработке POST-запроса к `/api/v1/users/` проверяется длина поля `last_name`: его содержимое не должно быть длиннее 150 символов.
+E       assert 201 == &lt;HTTPStatus.BAD_REQUEST: 400&gt;
+E         +201
+E         -&lt;HTTPStatus.BAD_REQUEST: 400&gt;
+
+tests\test_00_user_registration.py:211: AssertionError</failure></testcase><testcase classname="tests.test_00_user_registration.Test00UserRegistration" name="test_00_obtain_jwt_token_invalid_data" time="0.099"><failure message="AttributeError: 'ReviewsUser' object has no attribute 'code'">self = &lt;tests.test_00_user_registration.Test00UserRegistration object at 0x000001CF10DF93A0&gt;
+client = &lt;django.test.client.Client object at 0x000001CF10DFF310&gt;
+
+    def test_00_obtain_jwt_token_invalid_data(self, client):
+        response = client.post(self.URL_TOKEN)
+        assert response.status_code != HTTPStatus.NOT_FOUND, (
+            f'Эндпоинт `{self.URL_TOKEN}` не найдена. Проверьте настройки в '
+            '*urls.py*.'
+        )
+    
+        assert response.status_code == HTTPStatus.BAD_REQUEST, (
+            'Проверьте, что POST-запрос без данных, отправленный на эндпоинт '
+            f'`{self.URL_TOKEN}`, возвращает ответ со статусом 400.'
+        )
+    
+        invalid_data = {
+            'confirmation_code': 12345
+        }
+        response = client.post(self.URL_TOKEN, data=invalid_data)
+        assert response.status_code == HTTPStatus.BAD_REQUEST, (
+            'Проверьте, что POST-запрос, отправленный на эндпоинт '
+            f'`{self.URL_TOKEN}`и не содержащий информации о `username`, '
+            'возвращает ответ со статусом 400.'
+        )
+    
+        invalid_data = {
+            'username': 'unexisting_user',
+            'confirmation_code': 12345
+        }
+        response = client.post(self.URL_TOKEN, data=invalid_data)
+        assert response.status_code == HTTPStatus.NOT_FOUND, (
+            'Проверьте, что POST-запрос с несуществующим `username`, '
+            f'отправленный на эндпоинт `{self.URL_TOKEN}`, возвращает ответ '
+            'со статусом 404.'
+        )
+    
+        valid_data = {
+            'email': 'valid@yamdb.fake',
+            'username': 'valid_username'
+        }
+        response = client.post(self.URL_SIGNUP, data=valid_data)
+        assert response.status_code == HTTPStatus.OK, (
+            'Проверьте, что POST-запрос с корректными данными, отправленный '
+            f'на `{self.URL_SIGNUP}`, возвращает ответ со статусом 200.'
+        )
+    
+        invalid_data = {
+            'username': valid_data['username'],
+            'confirmation_code': 12345
+        }
+&gt;       response = client.post(self.URL_TOKEN, data=invalid_data)
+
+tests\test_00_user_registration.py:270: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv\lib\site-packages\django\test\client.py:751: in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+venv\lib\site-packages\django\test\client.py:407: in post
+    return self.generic('POST', path, post_data, content_type,
+venv\lib\site-packages\django\test\client.py:473: in generic
+    return self.request(**r)
+venv\lib\site-packages\django\test\client.py:719: in request
+    self.check_exception(response)
+venv\lib\site-packages\django\test\client.py:580: in check_exception
+    raise exc_value
+venv\lib\site-packages\django\core\handlers\exception.py:47: in inner
+    response = get_response(request)
+venv\lib\site-packages\django\core\handlers\base.py:181: in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+venv\lib\site-packages\django\views\decorators\csrf.py:54: in wrapped_view
+    return view_func(*args, **kwargs)
+venv\lib\site-packages\rest_framework\viewsets.py:125: in view
+    return self.dispatch(request, *args, **kwargs)
+venv\lib\site-packages\rest_framework\views.py:509: in dispatch
+    response = self.handle_exception(exc)
+venv\lib\site-packages\rest_framework\views.py:469: in handle_exception
+    self.raise_uncaught_exception(exc)
+venv\lib\site-packages\rest_framework\views.py:480: in raise_uncaught_exception
+    raise exc
+venv\lib\site-packages\rest_framework\views.py:506: in dispatch
+    response = handler(request, *args, **kwargs)
+venv\lib\site-packages\rest_framework\mixins.py:18: in create
+    serializer.is_valid(raise_exception=True)
+venv\lib\site-packages\rest_framework\serializers.py:220: in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+venv\lib\site-packages\rest_framework\serializers.py:422: in run_validation
+    value = self.validate(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = TokenSerializer(context={'request': &lt;rest_framework.request.Request: POST '/api/v1/auth/token/'&gt;, 'format': None, 'vie...e = CharField(write_only=True)
+    confirmation_code = CharField(write_only=True)
+    token = CharField(read_only=True)
+attrs = OrderedDict([('username', 'valid_username'), ('confirmation_code', '12345')])
+
+    def validate(self, attrs):
+        user = get_object_or_404(User, username=attrs.get("username"))
+&gt;       if attrs.get("confirmation_code") == str(user.code):
+E       AttributeError: 'ReviewsUser' object has no attribute 'code'
+
+api_yamdb\api\serializers.py:60: AttributeError</failure></testcase><testcase classname="tests.test_00_user_registration.Test00UserRegistration" name="test_00_registration_me_username_restricted" time="0.042" /><testcase classname="tests.test_00_user_registration.Test00UserRegistration" name="test_00_registration_same_email_restricted" time="0.041" /><testcase classname="tests.test_00_user_registration.Test00UserRegistration" name="test_get_new_confirmation_code_for_existing_user" time="0.033"><failure message="AttributeError: 'ReviewsUser' object has no attribute 'code'">self = &lt;tests.test_00_user_registration.Test00UserRegistration object at 0x000001CF110FC760&gt;
+client = &lt;django.test.client.Client object at 0x000001CF110FC880&gt;
+
+    def test_get_new_confirmation_code_for_existing_user(self, client):
+        valid_data = {
+            'email': 'test_email@yamdb.fake',
+            'username': 'valid_username_1'
+        }
+        response = client.post(self.URL_SIGNUP, data=valid_data)
+        assert response.status_code == HTTPStatus.OK, (
+            'Проверьте, что POST-запрос с корректными данными, отправленный '
+            f'на эндпоинт `{self.URL_SIGNUP}`, возвращает ответ со статусом '
+            '200.'
+        )
+    
+&gt;       response = client.post(self.URL_SIGNUP, data=valid_data)
+
+tests\test_00_user_registration.py:350: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv\lib\site-packages\django\test\client.py:751: in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+venv\lib\site-packages\django\test\client.py:407: in post
+    return self.generic('POST', path, post_data, content_type,
+venv\lib\site-packages\django\test\client.py:473: in generic
+    return self.request(**r)
+venv\lib\site-packages\django\test\client.py:719: in request
+    self.check_exception(response)
+venv\lib\site-packages\django\test\client.py:580: in check_exception
+    raise exc_value
+venv\lib\site-packages\django\core\handlers\exception.py:47: in inner
+    response = get_response(request)
+venv\lib\site-packages\django\core\handlers\base.py:181: in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+venv\lib\site-packages\django\views\decorators\csrf.py:54: in wrapped_view
+    return view_func(*args, **kwargs)
+venv\lib\site-packages\rest_framework\viewsets.py:125: in view
+    return self.dispatch(request, *args, **kwargs)
+venv\lib\site-packages\rest_framework\views.py:509: in dispatch
+    response = self.handle_exception(exc)
+venv\lib\site-packages\rest_framework\views.py:469: in handle_exception
+    self.raise_uncaught_exception(exc)
+venv\lib\site-packages\rest_framework\views.py:480: in raise_uncaught_exception
+    raise exc
+venv\lib\site-packages\rest_framework\views.py:506: in dispatch
+    response = handler(request, *args, **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;api.views.UserRegistrationViewSet object at 0x000001CF1113EA30&gt;
+request = &lt;rest_framework.request.Request: POST '/api/v1/auth/signup/'&gt;, args = (), kwargs = {}
+result = &lt;ReviewsUser: valid_username_1&gt;
+
+    def create(self, request, *args, **kwargs):
+        result = User.objects.filter(
+            username=request.data.get('username'),
+            email=request.data.get('email')
+        ).first()
+        if not result:
+            serializer = self.serializer_class(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            result = serializer.save()
+            result.code = generate_verification_code()
+            result.save()
+&gt;       send_verification_email(result, result.code)
+E       AttributeError: 'ReviewsUser' object has no attribute 'code'
+
+api_yamdb\api\views.py:119: AttributeError</failure></testcase><testcase classname="tests.test_00_user_registration.Test00UserRegistration" name="test_get_confirmation_code_for_user_created_by_admin" time="0.193"><failure message="AttributeError: 'ReviewsUser' object has no attribute 'code'">self = &lt;tests.test_00_user_registration.Test00UserRegistration object at 0x000001CF112E6970&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF112E6550&gt;
+client = &lt;django.test.client.Client object at 0x000001CF112D3F70&gt;, django_user_model = &lt;class 'reviews.models.ReviewsUser'&gt;
+
+    def test_get_confirmation_code_for_user_created_by_admin(
+            self, admin_client, client, django_user_model
+    ):
+        user_cnt = django_user_model.objects.count()
+        valid_data = {
+            'email': 'test_email@yamdb.fake',
+            'username': 'valid_username_1'
+        }
+        admin_client.post(self.URL_ADMIN_CREATE_USER, data=valid_data)
+        assert (user_cnt + 1) == django_user_model.objects.count(), (
+            'Если POST-запрос администратора на эндпоинт '
+            f'`{self.URL_ADMIN_CREATE_USER}` содержит корректные данные - '
+            'должен быть создан новый пользователь.'
+        )
+    
+&gt;       response = client.post(self.URL_SIGNUP, data=valid_data)
+
+tests\test_00_user_registration.py:372: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv\lib\site-packages\django\test\client.py:751: in post
+    response = super().post(path, data=data, content_type=content_type, secure=secure, **extra)
+venv\lib\site-packages\django\test\client.py:407: in post
+    return self.generic('POST', path, post_data, content_type,
+venv\lib\site-packages\django\test\client.py:473: in generic
+    return self.request(**r)
+venv\lib\site-packages\django\test\client.py:719: in request
+    self.check_exception(response)
+venv\lib\site-packages\django\test\client.py:580: in check_exception
+    raise exc_value
+venv\lib\site-packages\django\core\handlers\exception.py:47: in inner
+    response = get_response(request)
+venv\lib\site-packages\django\core\handlers\base.py:181: in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+venv\lib\site-packages\django\views\decorators\csrf.py:54: in wrapped_view
+    return view_func(*args, **kwargs)
+venv\lib\site-packages\rest_framework\viewsets.py:125: in view
+    return self.dispatch(request, *args, **kwargs)
+venv\lib\site-packages\rest_framework\views.py:509: in dispatch
+    response = self.handle_exception(exc)
+venv\lib\site-packages\rest_framework\views.py:469: in handle_exception
+    self.raise_uncaught_exception(exc)
+venv\lib\site-packages\rest_framework\views.py:480: in raise_uncaught_exception
+    raise exc
+venv\lib\site-packages\rest_framework\views.py:506: in dispatch
+    response = handler(request, *args, **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;api.views.UserRegistrationViewSet object at 0x000001CF110D4D60&gt;
+request = &lt;rest_framework.request.Request: POST '/api/v1/auth/signup/'&gt;, args = (), kwargs = {}
+result = &lt;ReviewsUser: valid_username_1&gt;
+
+    def create(self, request, *args, **kwargs):
+        result = User.objects.filter(
+            username=request.data.get('username'),
+            email=request.data.get('email')
+        ).first()
+        if not result:
+            serializer = self.serializer_class(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            result = serializer.save()
+            result.code = generate_verification_code()
+            result.save()
+&gt;       send_verification_email(result, result.code)
+E       AttributeError: 'ReviewsUser' object has no attribute 'code'
+
+api_yamdb\api\views.py:119: AttributeError</failure></testcase><testcase classname="tests.test_01_users.Test01UserAPI" name="test_01_users_not_authenticated" time="0.044" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_02_users_username_not_authenticated" time="0.183" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_03_users_me_not_authenticated" time="0.021" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_04_users_get_admin" time="0.154" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_04_02_users_get_search" time="0.304" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_04_01_users_get_admin_only" time="0.303" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_05_01_users_post_admin_bad_requests" time="0.186" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_05_02_users_post_admin_user_creation[data0-]" time="0.158" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_05_02_users_post_admin_user_creation[data1-без указания роли нового пользователя ]" time="0.203" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_05_03_users_post_response_has_data" time="0.168" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_05_04_users_post_user_superuser" time="0.155" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_06_users_username_get_admin" time="0.284" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_06_users_username_get_not_admin" time="0.419" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_07_01_users_username_patch_admin" time="0.339" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_07_02_users_username_patch_moderator" time="0.318" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_07_03_users_username_patch_user" time="0.160" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_07_05_users_username_put_not_allowed" time="0.334"><failure message="AssertionError: Проверьте, что PUT-запрос к `/api/v1/users/{username}/` не предусмотрен и возвращает статус 405.&#10;assert 400 == &lt;HTTPStatus.METHOD_NOT_ALLOWED: 405&gt;&#10;  +400&#10;  -&lt;HTTPStatus.METHOD_NOT_ALLOWED: 405&gt;">self = &lt;tests.test_01_users.Test01UserAPI object at 0x000001CF10E135B0&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF10A33970&gt;, user = &lt;ReviewsUser: TestUser&gt;
+
+    def test_07_05_users_username_put_not_allowed(self, admin_client, user):
+        response = admin_client.put(
+            f'{self.USERS_URL}{user.username}/', data=self.PATCH_DATA
+        )
+&gt;       assert response.status_code == HTTPStatus.METHOD_NOT_ALLOWED, (
+            f'Проверьте, что PUT-запрос к `{self.USERS_URL}'
+            '{username}/` не предусмотрен и возвращает статус 405.'
+        )
+E       AssertionError: Проверьте, что PUT-запрос к `/api/v1/users/{username}/` не предусмотрен и возвращает статус 405.
+E       assert 400 == &lt;HTTPStatus.METHOD_NOT_ALLOWED: 405&gt;
+E         +400
+E         -&lt;HTTPStatus.METHOD_NOT_ALLOWED: 405&gt;
+
+tests\test_01_users.py:412: AssertionError</failure></testcase><testcase classname="tests.test_01_users.Test01UserAPI" name="test_08_01_users_username_delete_admin" time="0.294" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_08_02_users_username_delete_moderator" time="0.317" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_08_03_users_username_delete_user" time="0.173" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_08_04_users_username_delete_superuser" time="0.287" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_09_users_me_get" time="0.192" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_09_02_users_me_delete_not_allowed" time="0.153" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_10_01_users_me_patch" time="0.466" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_10_02_users_me_has_field_validation[data0-messege0]" time="0.160" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_10_02_users_me_has_field_validation[data1-messege1]" time="0.155"><failure message="AssertionError: Проверьте, что при обработке PATCH-запроса к `/api/v1/users/me/` проверяется длина поля `username`: его содержимое не должно быть длиннее 150 символов.&#10;assert 200 == &lt;HTTPStatus.BAD_REQUEST: 400&gt;&#10;  +200&#10;  -&lt;HTTPStatus.BAD_REQUEST: 400&gt;">self = &lt;tests.test_01_users.Test01UserAPI object at 0x000001CF10B13AF0&gt;
+user_client = &lt;rest_framework.test.APIClient object at 0x000001CF111BDEB0&gt;
+data = {'email': 'valid-email@yamdb.fake', 'username': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'}
+messege = ('Проверьте, что при обработке {request_method}-запроса к `{url}` проверяется длина поля `username`: его содержимое не должно быть длиннее 150 символов.',)
+
+    @pytest.mark.parametrize(
+        'data,messege', invalid_data_for_user_patch_and_creation
+    )
+    def test_10_02_users_me_has_field_validation(self, user_client, data,
+                                                 messege):
+        request_method = 'PATCH'
+        response = user_client.patch(self.USERS_ME_URL, data=data)
+&gt;       assert response.status_code == HTTPStatus.BAD_REQUEST, (
+            messege[0].format(
+                url=self.USERS_ME_URL,
+                request_method=request_method
+            )
+        )
+E       AssertionError: Проверьте, что при обработке PATCH-запроса к `/api/v1/users/me/` проверяется длина поля `username`: его содержимое не должно быть длиннее 150 символов.
+E       assert 200 == &lt;HTTPStatus.BAD_REQUEST: 400&gt;
+E         +200
+E         -&lt;HTTPStatus.BAD_REQUEST: 400&gt;
+
+tests\test_01_users.py:538: AssertionError</failure></testcase><testcase classname="tests.test_01_users.Test01UserAPI" name="test_10_02_users_me_has_field_validation[data2-messege2]" time="0.154" /><testcase classname="tests.test_01_users.Test01UserAPI" name="test_10_02_users_me_has_field_validation[data3-messege3]" time="0.186"><failure message="AssertionError: Проверьте, что при обработке POST-запроса к `/api/v1/users/me/` проверяется длина поля `first_name`: его содержимое не должно быть длиннее 150 символов.&#10;assert 200 == &lt;HTTPStatus.BAD_REQUEST: 400&gt;&#10;  +200&#10;  -&lt;HTTPStatus.BAD_REQUEST: 400&gt;">self = &lt;tests.test_01_users.Test01UserAPI object at 0x000001CF10B2D8E0&gt;
+user_client = &lt;rest_framework.test.APIClient object at 0x000001CF111B4250&gt;
+data = {'email': 'valid-email@yamdb.fake', 'first_name': 'toolonggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg', 'username': 'validname'}
+messege = ('Проверьте, что при обработке POST-запроса к `{url}` проверяется длина поля `first_name`: его содержимое не должно быть длиннее 150 символов.',)
+
+    @pytest.mark.parametrize(
+        'data,messege', invalid_data_for_user_patch_and_creation
+    )
+    def test_10_02_users_me_has_field_validation(self, user_client, data,
+                                                 messege):
+        request_method = 'PATCH'
+        response = user_client.patch(self.USERS_ME_URL, data=data)
+&gt;       assert response.status_code == HTTPStatus.BAD_REQUEST, (
+            messege[0].format(
+                url=self.USERS_ME_URL,
+                request_method=request_method
+            )
+        )
+E       AssertionError: Проверьте, что при обработке POST-запроса к `/api/v1/users/me/` проверяется длина поля `first_name`: его содержимое не должно быть длиннее 150 символов.
+E       assert 200 == &lt;HTTPStatus.BAD_REQUEST: 400&gt;
+E         +200
+E         -&lt;HTTPStatus.BAD_REQUEST: 400&gt;
+
+tests\test_01_users.py:538: AssertionError</failure></testcase><testcase classname="tests.test_01_users.Test01UserAPI" name="test_10_02_users_me_has_field_validation[data4-messege4]" time="0.210"><failure message="AssertionError: Проверьте, что при обработке POST-запроса к `/api/v1/users/me/` проверяется длина поля `last_name`: его содержимое не должно быть длиннее 150 символов.&#10;assert 200 == &lt;HTTPStatus.BAD_REQUEST: 400&gt;&#10;  +200&#10;  -&lt;HTTPStatus.BAD_REQUEST: 400&gt;">self = &lt;tests.test_01_users.Test01UserAPI object at 0x000001CF111B4070&gt;
+user_client = &lt;rest_framework.test.APIClient object at 0x000001CF110DDD90&gt;
+data = {'email': 'valid-email@yamdb.fake', 'last_name': 'toolonggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg', 'username': 'validname'}
+messege = ('Проверьте, что при обработке POST-запроса к `{url}` проверяется длина поля `last_name`: его содержимое не должно быть длиннее 150 символов.',)
+
+    @pytest.mark.parametrize(
+        'data,messege', invalid_data_for_user_patch_and_creation
+    )
+    def test_10_02_users_me_has_field_validation(self, user_client, data,
+                                                 messege):
+        request_method = 'PATCH'
+        response = user_client.patch(self.USERS_ME_URL, data=data)
+&gt;       assert response.status_code == HTTPStatus.BAD_REQUEST, (
+            messege[0].format(
+                url=self.USERS_ME_URL,
+                request_method=request_method
+            )
+        )
+E       AssertionError: Проверьте, что при обработке POST-запроса к `/api/v1/users/me/` проверяется длина поля `last_name`: его содержимое не должно быть длиннее 150 символов.
+E       assert 200 == &lt;HTTPStatus.BAD_REQUEST: 400&gt;
+E         +200
+E         -&lt;HTTPStatus.BAD_REQUEST: 400&gt;
+
+tests\test_01_users.py:538: AssertionError</failure></testcase><testcase classname="tests.test_01_users.Test01UserAPI" name="test_10_03_users_me_patch_change_role_not_allowed" time="0.202" /><testcase classname="tests.test_02_category.Test02CategoryAPI" name="test_01_category_not_auth" time="0.024" /><testcase classname="tests.test_02_category.Test02CategoryAPI" name="test_02_category_with_admin_user" time="0.182" /><testcase classname="tests.test_02_category.Test02CategoryAPI" name="test_03_category_fields_validation[data0-massage0]" time="0.175" /><testcase classname="tests.test_02_category.Test02CategoryAPI" name="test_03_category_fields_validation[data1-massage1]" time="0.168" /><testcase classname="tests.test_02_category.Test02CategoryAPI" name="test_03_category_fields_validation[data2-massage2]" time="0.158" /><testcase classname="tests.test_02_category.Test02CategoryAPI" name="test_04_category_delete_admin" time="0.164" /><testcase classname="tests.test_02_category.Test02CategoryAPI" name="test_05_category_check_permission_admin" time="0.431" /><testcase classname="tests.test_03_genre.Test03GenreAPI" name="test_01_genre_not_auth" time="0.023" /><testcase classname="tests.test_03_genre.Test03GenreAPI" name="test_02_genre" time="0.213" /><testcase classname="tests.test_03_genre.Test03GenreAPI" name="test_03_category_fields_validation[data0-massage0]" time="0.184" /><testcase classname="tests.test_03_genre.Test03GenreAPI" name="test_03_category_fields_validation[data1-massage1]" time="0.155" /><testcase classname="tests.test_03_genre.Test03GenreAPI" name="test_03_category_fields_validation[data2-massage2]" time="0.155" /><testcase classname="tests.test_03_genre.Test03GenreAPI" name="test_04_genres_delete" time="0.166" /><testcase classname="tests.test_03_genre.Test03GenreAPI" name="test_05_genres_check_permission" time="0.478" /><testcase classname="tests.test_04_title.Test04TitleAPI" name="test_01_title_not_auth" time="0.021" /><testcase classname="tests.test_04_title.Test04TitleAPI" name="test_02_title_admin" time="0.216"><failure message="AttributeError: Cannot find 'genre' on Title object, 'genre' is an invalid parameter to prefetch_related()">self = &lt;tests.test_04_title.Test04TitleAPI object at 0x000001CF112F3EE0&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF1130F7F0&gt;
+client = &lt;django.test.client.Client object at 0x000001CF110B6A00&gt;
+
+    def test_02_title_admin(self, admin_client, client):
+        genres = create_genre(admin_client)
+        categories = create_categories(admin_client)
+        title_count = 0
+    
+        assert_msg = (
+            f'Если POST-запрос администратора к `{self.TITLES_URL}` '
+            'содержит некорректные данные - должен вернуться ответ со '
+            'статусом 400.'
+        )
+        data = {}
+        response = admin_client.post(self.TITLES_URL, data=data)
+        assert response.status_code == HTTPStatus.BAD_REQUEST, assert_msg
+    
+        invalid_data = {
+            'name': 'Угнать за 60 секунд',
+            'year': 'дветыщи',
+            'genre': [genres[1]['slug']],
+            'category': categories[1]['slug'],
+            'description': 'Угонял машины всю ночь и немного подустал.'
+        }
+        response = admin_client.post(self.TITLES_URL, data=invalid_data)
+        assert response.status_code == HTTPStatus.BAD_REQUEST, assert_msg
+    
+        post_data_1 = {
+            'name': 'Мост через реку Квай',
+            'year': 1957,
+            'genre': [genres[0]['slug'], genres[1]['slug']],
+            'category': categories[0]['slug'],
+            'description': 'Рон Свонсон рекомендует.'
+        }
+        response = admin_client.post(self.TITLES_URL, data=post_data_1)
+        assert response.status_code == HTTPStatus.CREATED, (
+            f'Если POST-запрос администратора к `{self.TITLES_URL}` '
+            'содержит корректные данные - должен вернуться ответ со статусом '
+            '201.'
+        )
+        title_count += 1
+    
+        post_data_2 = {
+            'name': 'Хороший, плохой, злой.',
+            'year': 1966,
+            'genre': [genres[2]['slug']],
+            'category': categories[1]['slug'],
+            'description': 'Угадай ревьюера по названию фильма.'
+        }
+        response = admin_client.post(self.TITLES_URL, data=post_data_2)
+        assert response.status_code == HTTPStatus.CREATED, (
+            f'Если POST-запрос администратора к `{self.TITLES_URL}` '
+            'содержит корректные данные - должен вернуться ответ со статусом '
+            '201.'
+        )
+        title_count += 1
+        assert isinstance(response.json().get('id'), int), (
+            'Проверьте, при POST-запросе администратора к '
+            f'`{self.TITLES_URL}` в ответе возвращаются данные созданного '
+            'объекта. Сейчас поле `id` отсутствует или не является целым '
+            'числом.'
+        )
+    
+&gt;       response = client.get(self.TITLES_URL)
+
+tests\test_04_title.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv\lib\site-packages\django\test\client.py:742: in get
+    response = super().get(path, data=data, secure=secure, **extra)
+venv\lib\site-packages\django\test\client.py:396: in get
+    return self.generic('GET', path, secure=secure, **{
+venv\lib\site-packages\django\test\client.py:473: in generic
+    return self.request(**r)
+venv\lib\site-packages\django\test\client.py:719: in request
+    self.check_exception(response)
+venv\lib\site-packages\django\test\client.py:580: in check_exception
+    raise exc_value
+venv\lib\site-packages\django\core\handlers\exception.py:47: in inner
+    response = get_response(request)
+venv\lib\site-packages\django\core\handlers\base.py:181: in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+venv\lib\site-packages\django\views\decorators\csrf.py:54: in wrapped_view
+    return view_func(*args, **kwargs)
+venv\lib\site-packages\rest_framework\viewsets.py:125: in view
+    return self.dispatch(request, *args, **kwargs)
+venv\lib\site-packages\rest_framework\views.py:509: in dispatch
+    response = self.handle_exception(exc)
+venv\lib\site-packages\rest_framework\views.py:469: in handle_exception
+    self.raise_uncaught_exception(exc)
+venv\lib\site-packages\rest_framework\views.py:480: in raise_uncaught_exception
+    raise exc
+venv\lib\site-packages\rest_framework\views.py:506: in dispatch
+    response = handler(request, *args, **kwargs)
+venv\lib\site-packages\rest_framework\mixins.py:40: in list
+    page = self.paginate_queryset(queryset)
+venv\lib\site-packages\rest_framework\generics.py:171: in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+venv\lib\site-packages\rest_framework\pagination.py:216: in paginate_queryset
+    return list(self.page)
+venv\lib\site-packages\django\core\paginator.py:177: in __len__
+    return len(self.object_list)
+venv\lib\site-packages\django\db\models\query.py:262: in __len__
+    self._fetch_all()
+venv\lib\site-packages\django\db\models\query.py:1326: in _fetch_all
+    self._prefetch_related_objects()
+venv\lib\site-packages\django\db\models\query.py:813: in _prefetch_related_objects
+    prefetch_related_objects(self._result_cache, *self._prefetch_related_lookups)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+model_instances = [&lt;Title: Мост через реку Квай&gt;, &lt;Title: Хороший, плохой, злой.&gt;], related_lookups = ('genre',)
+done_queries = {}, auto_lookups = set(), followed_descriptors = set()
+
+    def prefetch_related_objects(model_instances, *related_lookups):
+        """
+        Populate prefetched object caches for a list of model instances based on
+        the lookups/Prefetch instances given.
+        """
+        if not model_instances:
+            return  # nothing to do
+    
+        # We need to be able to dynamically add to the list of prefetch_related
+        # lookups that we look up (see below).  So we need some book keeping to
+        # ensure we don't do duplicate work.
+        done_queries = {}    # dictionary of things like 'foo__bar': [results]
+    
+        auto_lookups = set()  # we add to this as we go through.
+        followed_descriptors = set()  # recursion protection
+    
+        all_lookups = normalize_prefetch_lookups(reversed(related_lookups))
+        while all_lookups:
+            lookup = all_lookups.pop()
+            if lookup.prefetch_to in done_queries:
+                if lookup.queryset is not None:
+                    raise ValueError("'%s' lookup was already seen with a different queryset. "
+                                     "You may need to adjust the ordering of your lookups." % lookup.prefetch_to)
+    
+                continue
+    
+            # Top level, the list of objects to decorate is the result cache
+            # from the primary QuerySet. It won't be for deeper levels.
+            obj_list = model_instances
+    
+            through_attrs = lookup.prefetch_through.split(LOOKUP_SEP)
+            for level, through_attr in enumerate(through_attrs):
+                # Prepare main instances
+                if not obj_list:
+                    break
+    
+                prefetch_to = lookup.get_current_prefetch_to(level)
+                if prefetch_to in done_queries:
+                    # Skip any prefetching, and any object preparation
+                    obj_list = done_queries[prefetch_to]
+                    continue
+    
+                # Prepare objects:
+                good_objects = True
+                for obj in obj_list:
+                    # Since prefetching can re-use instances, it is possible to have
+                    # the same instance multiple times in obj_list, so obj might
+                    # already be prepared.
+                    if not hasattr(obj, '_prefetched_objects_cache'):
+                        try:
+                            obj._prefetched_objects_cache = {}
+                        except (AttributeError, TypeError):
+                            # Must be an immutable object from
+                            # values_list(flat=True), for example (TypeError) or
+                            # a QuerySet subclass that isn't returning Model
+                            # instances (AttributeError), either in Django or a 3rd
+                            # party. prefetch_related() doesn't make sense, so quit.
+                            good_objects = False
+                            break
+                if not good_objects:
+                    break
+    
+                # Descend down tree
+    
+                # We assume that objects retrieved are homogeneous (which is the premise
+                # of prefetch_related), so what applies to first object applies to all.
+                first_obj = obj_list[0]
+                to_attr = lookup.get_current_to_attr(level)[0]
+                prefetcher, descriptor, attr_found, is_fetched = get_prefetcher(first_obj, through_attr, to_attr)
+    
+                if not attr_found:
+&gt;                   raise AttributeError("Cannot find '%s' on %s object, '%s' is an invalid "
+                                         "parameter to prefetch_related()" %
+                                         (through_attr, first_obj.__class__.__name__, lookup.prefetch_through))
+E                   AttributeError: Cannot find 'genre' on Title object, 'genre' is an invalid parameter to prefetch_related()
+
+venv\lib\site-packages\django\db\models\query.py:1713: AttributeError</failure></testcase><testcase classname="tests.test_04_title.Test04TitleAPI" name="test_03_titles_detail" time="0.187"><failure message="AttributeError: Cannot find 'genre' on Title object, 'genre' is an invalid parameter to prefetch_related()">self = &lt;tests.test_04_title.Test04TitleAPI object at 0x000001CF112D3BE0&gt;
+client = &lt;django.test.client.Client object at 0x000001CF110FCB80&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF1113EB50&gt;
+
+    def test_03_titles_detail(self, client, admin_client):
+        titles, categories, _ = create_titles(admin_client)
+&gt;       response = client.get(
+            self.TITLES_DETAIL_URL_TEMPLATE.format(title_id=titles[0]['id'])
+        )
+
+tests\test_04_title.py:198: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv\lib\site-packages\django\test\client.py:742: in get
+    response = super().get(path, data=data, secure=secure, **extra)
+venv\lib\site-packages\django\test\client.py:396: in get
+    return self.generic('GET', path, secure=secure, **{
+venv\lib\site-packages\django\test\client.py:473: in generic
+    return self.request(**r)
+venv\lib\site-packages\django\test\client.py:719: in request
+    self.check_exception(response)
+venv\lib\site-packages\django\test\client.py:580: in check_exception
+    raise exc_value
+venv\lib\site-packages\django\core\handlers\exception.py:47: in inner
+    response = get_response(request)
+venv\lib\site-packages\django\core\handlers\base.py:181: in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+venv\lib\site-packages\django\views\decorators\csrf.py:54: in wrapped_view
+    return view_func(*args, **kwargs)
+venv\lib\site-packages\rest_framework\viewsets.py:125: in view
+    return self.dispatch(request, *args, **kwargs)
+venv\lib\site-packages\rest_framework\views.py:509: in dispatch
+    response = self.handle_exception(exc)
+venv\lib\site-packages\rest_framework\views.py:469: in handle_exception
+    self.raise_uncaught_exception(exc)
+venv\lib\site-packages\rest_framework\views.py:480: in raise_uncaught_exception
+    raise exc
+venv\lib\site-packages\rest_framework\views.py:506: in dispatch
+    response = handler(request, *args, **kwargs)
+venv\lib\site-packages\rest_framework\mixins.py:54: in retrieve
+    instance = self.get_object()
+venv\lib\site-packages\rest_framework\generics.py:96: in get_object
+    obj = get_object_or_404(queryset, **filter_kwargs)
+venv\lib\site-packages\rest_framework\generics.py:19: in get_object_or_404
+    return _get_object_or_404(queryset, *filter_args, **filter_kwargs)
+venv\lib\site-packages\django\shortcuts.py:76: in get_object_or_404
+    return queryset.get(*args, **kwargs)
+venv\lib\site-packages\django\db\models\query.py:431: in get
+    num = len(clone)
+venv\lib\site-packages\django\db\models\query.py:262: in __len__
+    self._fetch_all()
+venv\lib\site-packages\django\db\models\query.py:1326: in _fetch_all
+    self._prefetch_related_objects()
+venv\lib\site-packages\django\db\models\query.py:813: in _prefetch_related_objects
+    prefetch_related_objects(self._result_cache, *self._prefetch_related_lookups)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+model_instances = [&lt;Title: Терминатор&gt;], related_lookups = ('genre',), done_queries = {}, auto_lookups = set()
+followed_descriptors = set()
+
+    def prefetch_related_objects(model_instances, *related_lookups):
+        """
+        Populate prefetched object caches for a list of model instances based on
+        the lookups/Prefetch instances given.
+        """
+        if not model_instances:
+            return  # nothing to do
+    
+        # We need to be able to dynamically add to the list of prefetch_related
+        # lookups that we look up (see below).  So we need some book keeping to
+        # ensure we don't do duplicate work.
+        done_queries = {}    # dictionary of things like 'foo__bar': [results]
+    
+        auto_lookups = set()  # we add to this as we go through.
+        followed_descriptors = set()  # recursion protection
+    
+        all_lookups = normalize_prefetch_lookups(reversed(related_lookups))
+        while all_lookups:
+            lookup = all_lookups.pop()
+            if lookup.prefetch_to in done_queries:
+                if lookup.queryset is not None:
+                    raise ValueError("'%s' lookup was already seen with a different queryset. "
+                                     "You may need to adjust the ordering of your lookups." % lookup.prefetch_to)
+    
+                continue
+    
+            # Top level, the list of objects to decorate is the result cache
+            # from the primary QuerySet. It won't be for deeper levels.
+            obj_list = model_instances
+    
+            through_attrs = lookup.prefetch_through.split(LOOKUP_SEP)
+            for level, through_attr in enumerate(through_attrs):
+                # Prepare main instances
+                if not obj_list:
+                    break
+    
+                prefetch_to = lookup.get_current_prefetch_to(level)
+                if prefetch_to in done_queries:
+                    # Skip any prefetching, and any object preparation
+                    obj_list = done_queries[prefetch_to]
+                    continue
+    
+                # Prepare objects:
+                good_objects = True
+                for obj in obj_list:
+                    # Since prefetching can re-use instances, it is possible to have
+                    # the same instance multiple times in obj_list, so obj might
+                    # already be prepared.
+                    if not hasattr(obj, '_prefetched_objects_cache'):
+                        try:
+                            obj._prefetched_objects_cache = {}
+                        except (AttributeError, TypeError):
+                            # Must be an immutable object from
+                            # values_list(flat=True), for example (TypeError) or
+                            # a QuerySet subclass that isn't returning Model
+                            # instances (AttributeError), either in Django or a 3rd
+                            # party. prefetch_related() doesn't make sense, so quit.
+                            good_objects = False
+                            break
+                if not good_objects:
+                    break
+    
+                # Descend down tree
+    
+                # We assume that objects retrieved are homogeneous (which is the premise
+                # of prefetch_related), so what applies to first object applies to all.
+                first_obj = obj_list[0]
+                to_attr = lookup.get_current_to_attr(level)[0]
+                prefetcher, descriptor, attr_found, is_fetched = get_prefetcher(first_obj, through_attr, to_attr)
+    
+                if not attr_found:
+&gt;                   raise AttributeError("Cannot find '%s' on %s object, '%s' is an invalid "
+                                         "parameter to prefetch_related()" %
+                                         (through_attr, first_obj.__class__.__name__, lookup.prefetch_through))
+E                   AttributeError: Cannot find 'genre' on Title object, 'genre' is an invalid parameter to prefetch_related()
+
+venv\lib\site-packages\django\db\models\query.py:1713: AttributeError</failure></testcase><testcase classname="tests.test_04_title.Test04TitleAPI" name="test_04_titles_name_length_validation" time="0.188"><failure message="AttributeError: Cannot find 'genre' on Title object, 'genre' is an invalid parameter to prefetch_related()">self = &lt;tests.test_04_title.Test04TitleAPI object at 0x000001CF123921F0&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF123928B0&gt;
+
+    def test_04_titles_name_length_validation(self, admin_client):
+        genres = create_genre(admin_client)
+        categories = create_categories(admin_client)
+    
+        data = {
+            'name': 'It`s Over 9000!' + '!' * 242,
+            'year': 1989,
+            'genre': [genres[0]['slug'], genres[1]['slug']],
+            'category': categories[0]['slug'],
+            'description': 'Dragon Ball Z'
+        }
+        response = admin_client.post(self.TITLES_URL, data=data)
+        assert response.status_code == HTTPStatus.BAD_REQUEST, (
+            'Убедитесь, что при обработке POST-запроса администратора к '
+            f'`{self.TITLES_URL}` проверяется длина поля `name`: название '
+            'произведения не может быть длиннее 256 символов.'
+        )
+    
+        data = {
+            'name': 'Мост через реку Квай',
+            'year': 1957,
+            'genre': [genres[0]['slug'], genres[1]['slug']],
+            'category': categories[0]['slug'],
+            'description': 'Рон Свонсон рекомендует.'
+        }
+        response = admin_client.post(self.TITLES_URL, data=data)
+        assert response.status_code == HTTPStatus.CREATED, (
+            f'Если POST-запрос администратора к `{self.TITLES_URL}` '
+            'содержит корректные данные - должен вернуться ответ со статусом '
+            '201.'
+        )
+        idx = response.json().get('id')
+        assert idx, (
+            'Проверьте, что ответ на успешный POST-запрос к '
+            f'`{self.TITLES_URL}` содержит `id` созданного произведения.'
+        )
+    
+&gt;       response = admin_client.patch(
+            self.TITLES_DETAIL_URL_TEMPLATE.format(title_id=idx),
+            data={'name': ('longname' + 'e' * 249)}
+        )
+
+tests\test_04_title.py:315: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv\lib\site-packages\rest_framework\test.py:311: in patch
+    response = super().patch(
+venv\lib\site-packages\rest_framework\test.py:217: in patch
+    return self.generic('PATCH', path, data, content_type, **extra)
+venv\lib\site-packages\rest_framework\test.py:233: in generic
+    return super().generic(
+venv\lib\site-packages\django\test\client.py:473: in generic
+    return self.request(**r)
+venv\lib\site-packages\rest_framework\test.py:285: in request
+    return super().request(**kwargs)
+venv\lib\site-packages\rest_framework\test.py:237: in request
+    request = super().request(**kwargs)
+venv\lib\site-packages\django\test\client.py:719: in request
+    self.check_exception(response)
+venv\lib\site-packages\django\test\client.py:580: in check_exception
+    raise exc_value
+venv\lib\site-packages\django\core\handlers\exception.py:47: in inner
+    response = get_response(request)
+venv\lib\site-packages\django\core\handlers\base.py:181: in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+venv\lib\site-packages\django\views\decorators\csrf.py:54: in wrapped_view
+    return view_func(*args, **kwargs)
+venv\lib\site-packages\rest_framework\viewsets.py:125: in view
+    return self.dispatch(request, *args, **kwargs)
+venv\lib\site-packages\rest_framework\views.py:509: in dispatch
+    response = self.handle_exception(exc)
+venv\lib\site-packages\rest_framework\views.py:469: in handle_exception
+    self.raise_uncaught_exception(exc)
+venv\lib\site-packages\rest_framework\views.py:480: in raise_uncaught_exception
+    raise exc
+venv\lib\site-packages\rest_framework\views.py:506: in dispatch
+    response = handler(request, *args, **kwargs)
+venv\lib\site-packages\rest_framework\mixins.py:82: in partial_update
+    return self.update(request, *args, **kwargs)
+venv\lib\site-packages\rest_framework\mixins.py:65: in update
+    instance = self.get_object()
+venv\lib\site-packages\rest_framework\generics.py:96: in get_object
+    obj = get_object_or_404(queryset, **filter_kwargs)
+venv\lib\site-packages\rest_framework\generics.py:19: in get_object_or_404
+    return _get_object_or_404(queryset, *filter_args, **filter_kwargs)
+venv\lib\site-packages\django\shortcuts.py:76: in get_object_or_404
+    return queryset.get(*args, **kwargs)
+venv\lib\site-packages\django\db\models\query.py:431: in get
+    num = len(clone)
+venv\lib\site-packages\django\db\models\query.py:262: in __len__
+    self._fetch_all()
+venv\lib\site-packages\django\db\models\query.py:1326: in _fetch_all
+    self._prefetch_related_objects()
+venv\lib\site-packages\django\db\models\query.py:813: in _prefetch_related_objects
+    prefetch_related_objects(self._result_cache, *self._prefetch_related_lookups)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+model_instances = [&lt;Title: Мост через реку Квай&gt;], related_lookups = ('genre',), done_queries = {}, auto_lookups = set()
+followed_descriptors = set()
+
+    def prefetch_related_objects(model_instances, *related_lookups):
+        """
+        Populate prefetched object caches for a list of model instances based on
+        the lookups/Prefetch instances given.
+        """
+        if not model_instances:
+            return  # nothing to do
+    
+        # We need to be able to dynamically add to the list of prefetch_related
+        # lookups that we look up (see below).  So we need some book keeping to
+        # ensure we don't do duplicate work.
+        done_queries = {}    # dictionary of things like 'foo__bar': [results]
+    
+        auto_lookups = set()  # we add to this as we go through.
+        followed_descriptors = set()  # recursion protection
+    
+        all_lookups = normalize_prefetch_lookups(reversed(related_lookups))
+        while all_lookups:
+            lookup = all_lookups.pop()
+            if lookup.prefetch_to in done_queries:
+                if lookup.queryset is not None:
+                    raise ValueError("'%s' lookup was already seen with a different queryset. "
+                                     "You may need to adjust the ordering of your lookups." % lookup.prefetch_to)
+    
+                continue
+    
+            # Top level, the list of objects to decorate is the result cache
+            # from the primary QuerySet. It won't be for deeper levels.
+            obj_list = model_instances
+    
+            through_attrs = lookup.prefetch_through.split(LOOKUP_SEP)
+            for level, through_attr in enumerate(through_attrs):
+                # Prepare main instances
+                if not obj_list:
+                    break
+    
+                prefetch_to = lookup.get_current_prefetch_to(level)
+                if prefetch_to in done_queries:
+                    # Skip any prefetching, and any object preparation
+                    obj_list = done_queries[prefetch_to]
+                    continue
+    
+                # Prepare objects:
+                good_objects = True
+                for obj in obj_list:
+                    # Since prefetching can re-use instances, it is possible to have
+                    # the same instance multiple times in obj_list, so obj might
+                    # already be prepared.
+                    if not hasattr(obj, '_prefetched_objects_cache'):
+                        try:
+                            obj._prefetched_objects_cache = {}
+                        except (AttributeError, TypeError):
+                            # Must be an immutable object from
+                            # values_list(flat=True), for example (TypeError) or
+                            # a QuerySet subclass that isn't returning Model
+                            # instances (AttributeError), either in Django or a 3rd
+                            # party. prefetch_related() doesn't make sense, so quit.
+                            good_objects = False
+                            break
+                if not good_objects:
+                    break
+    
+                # Descend down tree
+    
+                # We assume that objects retrieved are homogeneous (which is the premise
+                # of prefetch_related), so what applies to first object applies to all.
+                first_obj = obj_list[0]
+                to_attr = lookup.get_current_to_attr(level)[0]
+                prefetcher, descriptor, attr_found, is_fetched = get_prefetcher(first_obj, through_attr, to_attr)
+    
+                if not attr_found:
+&gt;                   raise AttributeError("Cannot find '%s' on %s object, '%s' is an invalid "
+                                         "parameter to prefetch_related()" %
+                                         (through_attr, first_obj.__class__.__name__, lookup.prefetch_through))
+E                   AttributeError: Cannot find 'genre' on Title object, 'genre' is an invalid parameter to prefetch_related()
+
+venv\lib\site-packages\django\db\models\query.py:1713: AttributeError</failure></testcase><testcase classname="tests.test_04_title.Test04TitleAPI" name="test_05_titles_check_permission" time="0.470" /><testcase classname="tests.test_04_title.Test04TitleAPI" name="test_06_titles_detail_put_not_allowed" time="0.334"><failure message="AttributeError: Cannot find 'genre' on Title object, 'genre' is an invalid parameter to prefetch_related()">self = &lt;tests.test_04_title.Test04TitleAPI object at 0x000001CF10ABA760&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF111C2E50&gt;, user = &lt;ReviewsUser: TestUser&gt;
+
+    def test_06_titles_detail_put_not_allowed(self, admin_client, user):
+        titles, _, _ = create_titles(admin_client)
+        title = titles[0]
+        title['name'] = 'Новое название произведения.'
+&gt;       response = admin_client.put(
+            self.TITLES_DETAIL_URL_TEMPLATE.format(title_id=title['id']),
+            data=title
+        )
+
+tests\test_04_title.py:348: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv\lib\site-packages\rest_framework\test.py:303: in put
+    response = super().put(
+venv\lib\site-packages\rest_framework\test.py:213: in put
+    return self.generic('PUT', path, data, content_type, **extra)
+venv\lib\site-packages\rest_framework\test.py:233: in generic
+    return super().generic(
+venv\lib\site-packages\django\test\client.py:473: in generic
+    return self.request(**r)
+venv\lib\site-packages\rest_framework\test.py:285: in request
+    return super().request(**kwargs)
+venv\lib\site-packages\rest_framework\test.py:237: in request
+    request = super().request(**kwargs)
+venv\lib\site-packages\django\test\client.py:719: in request
+    self.check_exception(response)
+venv\lib\site-packages\django\test\client.py:580: in check_exception
+    raise exc_value
+venv\lib\site-packages\django\core\handlers\exception.py:47: in inner
+    response = get_response(request)
+venv\lib\site-packages\django\core\handlers\base.py:181: in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+venv\lib\site-packages\django\views\decorators\csrf.py:54: in wrapped_view
+    return view_func(*args, **kwargs)
+venv\lib\site-packages\rest_framework\viewsets.py:125: in view
+    return self.dispatch(request, *args, **kwargs)
+venv\lib\site-packages\rest_framework\views.py:509: in dispatch
+    response = self.handle_exception(exc)
+venv\lib\site-packages\rest_framework\views.py:469: in handle_exception
+    self.raise_uncaught_exception(exc)
+venv\lib\site-packages\rest_framework\views.py:480: in raise_uncaught_exception
+    raise exc
+venv\lib\site-packages\rest_framework\views.py:506: in dispatch
+    response = handler(request, *args, **kwargs)
+venv\lib\site-packages\rest_framework\mixins.py:65: in update
+    instance = self.get_object()
+venv\lib\site-packages\rest_framework\generics.py:96: in get_object
+    obj = get_object_or_404(queryset, **filter_kwargs)
+venv\lib\site-packages\rest_framework\generics.py:19: in get_object_or_404
+    return _get_object_or_404(queryset, *filter_args, **filter_kwargs)
+venv\lib\site-packages\django\shortcuts.py:76: in get_object_or_404
+    return queryset.get(*args, **kwargs)
+venv\lib\site-packages\django\db\models\query.py:431: in get
+    num = len(clone)
+venv\lib\site-packages\django\db\models\query.py:262: in __len__
+    self._fetch_all()
+venv\lib\site-packages\django\db\models\query.py:1326: in _fetch_all
+    self._prefetch_related_objects()
+venv\lib\site-packages\django\db\models\query.py:813: in _prefetch_related_objects
+    prefetch_related_objects(self._result_cache, *self._prefetch_related_lookups)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+model_instances = [&lt;Title: Терминатор&gt;], related_lookups = ('genre',), done_queries = {}, auto_lookups = set()
+followed_descriptors = set()
+
+    def prefetch_related_objects(model_instances, *related_lookups):
+        """
+        Populate prefetched object caches for a list of model instances based on
+        the lookups/Prefetch instances given.
+        """
+        if not model_instances:
+            return  # nothing to do
+    
+        # We need to be able to dynamically add to the list of prefetch_related
+        # lookups that we look up (see below).  So we need some book keeping to
+        # ensure we don't do duplicate work.
+        done_queries = {}    # dictionary of things like 'foo__bar': [results]
+    
+        auto_lookups = set()  # we add to this as we go through.
+        followed_descriptors = set()  # recursion protection
+    
+        all_lookups = normalize_prefetch_lookups(reversed(related_lookups))
+        while all_lookups:
+            lookup = all_lookups.pop()
+            if lookup.prefetch_to in done_queries:
+                if lookup.queryset is not None:
+                    raise ValueError("'%s' lookup was already seen with a different queryset. "
+                                     "You may need to adjust the ordering of your lookups." % lookup.prefetch_to)
+    
+                continue
+    
+            # Top level, the list of objects to decorate is the result cache
+            # from the primary QuerySet. It won't be for deeper levels.
+            obj_list = model_instances
+    
+            through_attrs = lookup.prefetch_through.split(LOOKUP_SEP)
+            for level, through_attr in enumerate(through_attrs):
+                # Prepare main instances
+                if not obj_list:
+                    break
+    
+                prefetch_to = lookup.get_current_prefetch_to(level)
+                if prefetch_to in done_queries:
+                    # Skip any prefetching, and any object preparation
+                    obj_list = done_queries[prefetch_to]
+                    continue
+    
+                # Prepare objects:
+                good_objects = True
+                for obj in obj_list:
+                    # Since prefetching can re-use instances, it is possible to have
+                    # the same instance multiple times in obj_list, so obj might
+                    # already be prepared.
+                    if not hasattr(obj, '_prefetched_objects_cache'):
+                        try:
+                            obj._prefetched_objects_cache = {}
+                        except (AttributeError, TypeError):
+                            # Must be an immutable object from
+                            # values_list(flat=True), for example (TypeError) or
+                            # a QuerySet subclass that isn't returning Model
+                            # instances (AttributeError), either in Django or a 3rd
+                            # party. prefetch_related() doesn't make sense, so quit.
+                            good_objects = False
+                            break
+                if not good_objects:
+                    break
+    
+                # Descend down tree
+    
+                # We assume that objects retrieved are homogeneous (which is the premise
+                # of prefetch_related), so what applies to first object applies to all.
+                first_obj = obj_list[0]
+                to_attr = lookup.get_current_to_attr(level)[0]
+                prefetcher, descriptor, attr_found, is_fetched = get_prefetcher(first_obj, through_attr, to_attr)
+    
+                if not attr_found:
+&gt;                   raise AttributeError("Cannot find '%s' on %s object, '%s' is an invalid "
+                                         "parameter to prefetch_related()" %
+                                         (through_attr, first_obj.__class__.__name__, lookup.prefetch_through))
+E                   AttributeError: Cannot find 'genre' on Title object, 'genre' is an invalid parameter to prefetch_related()
+
+venv\lib\site-packages\django\db\models\query.py:1713: AttributeError</failure></testcase><testcase classname="tests.test_05_review.Test05ReviewAPI" name="test_01_review_not_auth" time="0.461"><failure message="AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.">self = &lt;tests.test_05_review.Test05ReviewAPI object at 0x000001CF12390850&gt;
+client = &lt;django.test.client.Client object at 0x000001CF12602160&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF12602B50&gt;, admin = &lt;ReviewsUser: TestAdmin&gt;
+user_client = &lt;rest_framework.test.APIClient object at 0x000001CF12602DF0&gt;, user = &lt;ReviewsUser: TestUser&gt;
+moderator_client = &lt;rest_framework.test.APIClient object at 0x000001CF111D99A0&gt;, moderator = &lt;ReviewsUser: TestModerator&gt;
+
+    def test_01_review_not_auth(self, client, admin_client, admin, user_client,
+                                user, moderator_client, moderator):
+        author_map = {
+            admin: admin_client,
+            user: user_client,
+            moderator: moderator_client
+        }
+&gt;       reviews, titles = create_reviews(admin_client, author_map)
+
+tests\test_05_review.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests\utils.py:254: in create_reviews
+    response = create_single_review(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = &lt;rest_framework.test.APIClient object at 0x000001CF12602B50&gt;, title_id = 10, text = 'review number 1', score = 5
+
+    def create_single_review(client, title_id, text, score):
+        data = {'text': text, 'score': score}
+        response = client.post(
+            f'/api/v1/titles/{title_id}/reviews/', data=data
+        )
+        if response.status_code != HTTPStatus.CREATED:
+            print(f"Failed to create review: {response.content}")
+&gt;       assert response.status_code == HTTPStatus.CREATED, (
+            'Если POST-запрос авторизованного пользователя к '
+            '`/api/v1/titles/{title_id}/reviews/` содержит корректные данные - '
+            'должен вернуться ответ со статусом 201.'
+        )
+E       AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.
+
+tests\utils.py:160: AssertionError</failure></testcase><testcase classname="tests.test_05_review.Test05ReviewAPI" name="test_02_review_post" time="0.490"><failure message="AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит некорректные данные - должен вернуться ответ со статусом 400.&#10;assert 404 == &lt;HTTPStatus.BAD_REQUEST: 400&gt;&#10;  +404&#10;  -&lt;HTTPStatus.BAD_REQUEST: 400&gt;">self = &lt;tests.test_05_review.Test05ReviewAPI object at 0x000001CF111E0700&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF1235DE20&gt;
+user_client = &lt;rest_framework.test.APIClient object at 0x000001CF1235DFA0&gt;
+moderator_client = &lt;rest_framework.test.APIClient object at 0x000001CF1235D9D0&gt;, admin = &lt;ReviewsUser: TestAdmin&gt;
+
+    def test_02_review_post(self, admin_client, user_client,
+                            moderator_client, admin):
+        titles, _, _ = create_titles(admin_client)
+        title_0_reviews_count = 0
+        first_title_reviews_url = self.REVIEWS_URL_TEMPLATE.format(
+            title_id=titles[0]['id']
+        )
+        second_title_reviews_url = self.REVIEWS_URL_TEMPLATE.format(
+            title_id=titles[1]['id']
+        )
+    
+        data = {}
+        response = user_client.post(first_title_reviews_url, data=data)
+&gt;       assert response.status_code == HTTPStatus.BAD_REQUEST, (
+            'Если POST-запрос авторизованного пользователя к '
+            f'`{self.REVIEWS_URL_TEMPLATE}` содержит некорректные данные - '
+            'должен вернуться ответ со статусом 400.'
+        )
+E       AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит некорректные данные - должен вернуться ответ со статусом 400.
+E       assert 404 == &lt;HTTPStatus.BAD_REQUEST: 400&gt;
+E         +404
+E         -&lt;HTTPStatus.BAD_REQUEST: 400&gt;
+
+tests\test_05_review.py:88: AssertionError</failure></testcase><testcase classname="tests.test_05_review.Test05ReviewAPI" name="test_03_review_detail_get" time="0.486"><failure message="AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.">self = &lt;tests.test_05_review.Test05ReviewAPI object at 0x000001CF1235D1C0&gt;
+client = &lt;django.test.client.Client object at 0x000001CF10FE69A0&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF111D9430&gt;, admin = &lt;ReviewsUser: TestAdmin&gt;
+user = &lt;ReviewsUser: TestUser&gt;, user_client = &lt;rest_framework.test.APIClient object at 0x000001CF11209580&gt;
+moderator = &lt;ReviewsUser: TestModerator&gt;, moderator_client = &lt;rest_framework.test.APIClient object at 0x000001CF11209DC0&gt;
+
+    def test_03_review_detail_get(self, client, admin_client, admin, user,
+                                  user_client, moderator, moderator_client):
+        author_map = {
+            admin: admin_client,
+            user: user_client,
+            moderator: moderator_client
+        }
+&gt;       reviews, titles = create_reviews(admin_client, author_map)
+
+tests\test_05_review.py:233: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests\utils.py:254: in create_reviews
+    response = create_single_review(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = &lt;rest_framework.test.APIClient object at 0x000001CF111D9430&gt;, title_id = 14, text = 'review number 1', score = 5
+
+    def create_single_review(client, title_id, text, score):
+        data = {'text': text, 'score': score}
+        response = client.post(
+            f'/api/v1/titles/{title_id}/reviews/', data=data
+        )
+        if response.status_code != HTTPStatus.CREATED:
+            print(f"Failed to create review: {response.content}")
+&gt;       assert response.status_code == HTTPStatus.CREATED, (
+            'Если POST-запрос авторизованного пользователя к '
+            '`/api/v1/titles/{title_id}/reviews/` содержит корректные данные - '
+            'должен вернуться ответ со статусом 201.'
+        )
+E       AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.
+
+tests\utils.py:160: AssertionError</failure></testcase><testcase classname="tests.test_05_review.Test05ReviewAPI" name="test_04_review_detail_user" time="0.471"><failure message="AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.">self = &lt;tests.test_05_review.Test05ReviewAPI object at 0x000001CF1234B0A0&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF1130FAC0&gt;, admin = &lt;ReviewsUser: TestAdmin&gt;
+user = &lt;ReviewsUser: TestUser&gt;, user_client = &lt;rest_framework.test.APIClient object at 0x000001CF1130F6D0&gt;
+moderator = &lt;ReviewsUser: TestModerator&gt;, moderator_client = &lt;rest_framework.test.APIClient object at 0x000001CF1130F3D0&gt;
+
+    def test_04_review_detail_user(self, admin_client, admin, user,
+                                   user_client, moderator, moderator_client):
+        author_map = {
+            admin: admin_client,
+            user: user_client,
+            moderator: moderator_client
+        }
+&gt;       reviews, titles = create_reviews(admin_client, author_map)
+
+tests\test_05_review.py:266: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests\utils.py:254: in create_reviews
+    response = create_single_review(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = &lt;rest_framework.test.APIClient object at 0x000001CF1130FAC0&gt;, title_id = 16, text = 'review number 1', score = 5
+
+    def create_single_review(client, title_id, text, score):
+        data = {'text': text, 'score': score}
+        response = client.post(
+            f'/api/v1/titles/{title_id}/reviews/', data=data
+        )
+        if response.status_code != HTTPStatus.CREATED:
+            print(f"Failed to create review: {response.content}")
+&gt;       assert response.status_code == HTTPStatus.CREATED, (
+            'Если POST-запрос авторизованного пользователя к '
+            '`/api/v1/titles/{title_id}/reviews/` содержит корректные данные - '
+            'должен вернуться ответ со статусом 201.'
+        )
+E       AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.
+
+tests\utils.py:160: AssertionError</failure></testcase><testcase classname="tests.test_05_review.Test05ReviewAPI" name="test_05_reviews_detail_moderator_and_admin" time="0.479"><failure message="AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.">self = &lt;tests.test_05_review.Test05ReviewAPI object at 0x000001CF1120C520&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF110040D0&gt;, admin = &lt;ReviewsUser: TestAdmin&gt;
+user_client = &lt;rest_framework.test.APIClient object at 0x000001CF11004D00&gt;, user = &lt;ReviewsUser: TestUser&gt;
+moderator_client = &lt;rest_framework.test.APIClient object at 0x000001CF11004760&gt;, moderator = &lt;ReviewsUser: TestModerator&gt;
+
+    def test_05_reviews_detail_moderator_and_admin(self, admin_client, admin,
+                                                   user_client, user,
+                                                   moderator_client,
+                                                   moderator):
+        author_map = {
+            admin: admin_client,
+            user: user_client,
+            moderator: moderator_client
+        }
+&gt;       reviews, titles = create_reviews(admin_client, author_map)
+
+tests\test_05_review.py:354: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests\utils.py:254: in create_reviews
+    response = create_single_review(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = &lt;rest_framework.test.APIClient object at 0x000001CF110040D0&gt;, title_id = 18, text = 'review number 1', score = 5
+
+    def create_single_review(client, title_id, text, score):
+        data = {'text': text, 'score': score}
+        response = client.post(
+            f'/api/v1/titles/{title_id}/reviews/', data=data
+        )
+        if response.status_code != HTTPStatus.CREATED:
+            print(f"Failed to create review: {response.content}")
+&gt;       assert response.status_code == HTTPStatus.CREATED, (
+            'Если POST-запрос авторизованного пользователя к '
+            '`/api/v1/titles/{title_id}/reviews/` содержит корректные данные - '
+            'должен вернуться ответ со статусом 201.'
+        )
+E       AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.
+
+tests\utils.py:160: AssertionError</failure></testcase><testcase classname="tests.test_05_review.Test05ReviewAPI" name="test_06_reviews_detail_put_not_allowed" time="0.448"><failure message="AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.">self = &lt;tests.test_05_review.Test05ReviewAPI object at 0x000001CF111E6F10&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF111E68B0&gt;, admin = &lt;ReviewsUser: TestAdmin&gt;
+user_client = &lt;rest_framework.test.APIClient object at 0x000001CF112F3A30&gt;, user = &lt;ReviewsUser: TestUser&gt;
+moderator_client = &lt;rest_framework.test.APIClient object at 0x000001CF112F3970&gt;, moderator = &lt;ReviewsUser: TestModerator&gt;
+
+    def test_06_reviews_detail_put_not_allowed(
+            self, admin_client, admin, user_client, user, moderator_client,
+            moderator):
+        author_map = {
+            admin: admin_client,
+            user: user_client,
+            moderator: moderator_client
+        }
+&gt;       reviews, titles = create_reviews(admin_client, author_map)
+
+tests\test_05_review.py:403: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests\utils.py:254: in create_reviews
+    response = create_single_review(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = &lt;rest_framework.test.APIClient object at 0x000001CF111E68B0&gt;, title_id = 20, text = 'review number 1', score = 5
+
+    def create_single_review(client, title_id, text, score):
+        data = {'text': text, 'score': score}
+        response = client.post(
+            f'/api/v1/titles/{title_id}/reviews/', data=data
+        )
+        if response.status_code != HTTPStatus.CREATED:
+            print(f"Failed to create review: {response.content}")
+&gt;       assert response.status_code == HTTPStatus.CREATED, (
+            'Если POST-запрос авторизованного пользователя к '
+            '`/api/v1/titles/{title_id}/reviews/` содержит корректные данные - '
+            'должен вернуться ответ со статусом 201.'
+        )
+E       AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.
+
+tests\utils.py:160: AssertionError</failure></testcase><testcase classname="tests.test_06_comment.Test06CommentAPI" name="test_01_comment_not_auth" time="0.441"><failure message="AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.">self = &lt;tests.test_06_comment.Test06CommentAPI object at 0x000001CF10BBA700&gt;
+client = &lt;django.test.client.Client object at 0x000001CF10DBFA90&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF10DBFB50&gt;, admin = &lt;ReviewsUser: TestAdmin&gt;
+user_client = &lt;rest_framework.test.APIClient object at 0x000001CF10F95670&gt;, user = &lt;ReviewsUser: TestUser&gt;
+moderator_client = &lt;rest_framework.test.APIClient object at 0x000001CF10F95280&gt;, moderator = &lt;ReviewsUser: TestModerator&gt;
+
+    def test_01_comment_not_auth(self, client, admin_client, admin,
+                                 user_client, user, moderator_client,
+                                 moderator):
+        author_map = {
+            admin: admin_client,
+            user: user_client,
+            moderator: moderator_client
+        }
+&gt;       reviews, titles = create_reviews(admin_client, author_map)
+
+tests\test_06_comment.py:26: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests\utils.py:254: in create_reviews
+    response = create_single_review(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = &lt;rest_framework.test.APIClient object at 0x000001CF10DBFB50&gt;, title_id = 22, text = 'review number 1', score = 5
+
+    def create_single_review(client, title_id, text, score):
+        data = {'text': text, 'score': score}
+        response = client.post(
+            f'/api/v1/titles/{title_id}/reviews/', data=data
+        )
+        if response.status_code != HTTPStatus.CREATED:
+            print(f"Failed to create review: {response.content}")
+&gt;       assert response.status_code == HTTPStatus.CREATED, (
+            'Если POST-запрос авторизованного пользователя к '
+            '`/api/v1/titles/{title_id}/reviews/` содержит корректные данные - '
+            'должен вернуться ответ со статусом 201.'
+        )
+E       AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.
+
+tests\utils.py:160: AssertionError</failure></testcase><testcase classname="tests.test_06_comment.Test06CommentAPI" name="test_02_comment" time="0.437"><failure message="AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.">self = &lt;tests.test_06_comment.Test06CommentAPI object at 0x000001CF1113F070&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF11139F40&gt;, admin = &lt;ReviewsUser: TestAdmin&gt;
+user_client = &lt;rest_framework.test.APIClient object at 0x000001CF111392E0&gt;, user = &lt;ReviewsUser: TestUser&gt;
+moderator_client = &lt;rest_framework.test.APIClient object at 0x000001CF11139970&gt;, moderator = &lt;ReviewsUser: TestModerator&gt;
+
+    def test_02_comment(self, admin_client, admin, user_client, user,
+                        moderator_client, moderator):
+        author_map = {
+            admin: admin_client,
+            user: user_client,
+            moderator: moderator_client
+        }
+&gt;       reviews, titles = create_reviews(admin_client, author_map)
+
+tests\test_06_comment.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests\utils.py:254: in create_reviews
+    response = create_single_review(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = &lt;rest_framework.test.APIClient object at 0x000001CF11139F40&gt;, title_id = 24, text = 'review number 1', score = 5
+
+    def create_single_review(client, title_id, text, score):
+        data = {'text': text, 'score': score}
+        response = client.post(
+            f'/api/v1/titles/{title_id}/reviews/', data=data
+        )
+        if response.status_code != HTTPStatus.CREATED:
+            print(f"Failed to create review: {response.content}")
+&gt;       assert response.status_code == HTTPStatus.CREATED, (
+            'Если POST-запрос авторизованного пользователя к '
+            '`/api/v1/titles/{title_id}/reviews/` содержит корректные данные - '
+            'должен вернуться ответ со статусом 201.'
+        )
+E       AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.
+
+tests\utils.py:160: AssertionError</failure></testcase><testcase classname="tests.test_06_comment.Test06CommentAPI" name="test_03_comment_detail_get" time="0.481"><failure message="AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.">self = &lt;tests.test_06_comment.Test06CommentAPI object at 0x000001CF112D75B0&gt;
+client = &lt;django.test.client.Client object at 0x000001CF1121D0D0&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF1121D3A0&gt;, admin = &lt;ReviewsUser: TestAdmin&gt;
+user_client = &lt;rest_framework.test.APIClient object at 0x000001CF1121DA30&gt;, user = &lt;ReviewsUser: TestUser&gt;
+moderator_client = &lt;rest_framework.test.APIClient object at 0x000001CF1121D430&gt;, moderator = &lt;ReviewsUser: TestModerator&gt;
+
+    def test_03_comment_detail_get(self, client, admin_client, admin,
+                                   user_client, user, moderator_client,
+                                   moderator):
+        author_map = {
+            admin: admin_client,
+            user: user_client,
+            moderator: moderator_client
+        }
+&gt;       comments, reviews, titles = create_comments(admin_client, author_map)
+
+tests\test_06_comment.py:138: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests\utils.py:269: in create_comments
+    reviews, titles = create_reviews(admin_client, authors_map)
+tests\utils.py:254: in create_reviews
+    response = create_single_review(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = &lt;rest_framework.test.APIClient object at 0x000001CF1121D3A0&gt;, title_id = 26, text = 'review number 1', score = 5
+
+    def create_single_review(client, title_id, text, score):
+        data = {'text': text, 'score': score}
+        response = client.post(
+            f'/api/v1/titles/{title_id}/reviews/', data=data
+        )
+        if response.status_code != HTTPStatus.CREATED:
+            print(f"Failed to create review: {response.content}")
+&gt;       assert response.status_code == HTTPStatus.CREATED, (
+            'Если POST-запрос авторизованного пользователя к '
+            '`/api/v1/titles/{title_id}/reviews/` содержит корректные данные - '
+            'должен вернуться ответ со статусом 201.'
+        )
+E       AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.
+
+tests\utils.py:160: AssertionError</failure></testcase><testcase classname="tests.test_06_comment.Test06CommentAPI" name="test_04_comment_detail__user_patch_delete" time="0.459"><failure message="AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.">self = &lt;tests.test_06_comment.Test06CommentAPI object at 0x000001CF1121DD30&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF10B248E0&gt;, admin = &lt;ReviewsUser: TestAdmin&gt;
+user_client = &lt;rest_framework.test.APIClient object at 0x000001CF10F961F0&gt;, user = &lt;ReviewsUser: TestUser&gt;
+moderator_client = &lt;rest_framework.test.APIClient object at 0x000001CF10F96D90&gt;, moderator = &lt;ReviewsUser: TestModerator&gt;
+
+    def test_04_comment_detail__user_patch_delete(self, admin_client, admin,
+                                                  user_client, user,
+                                                  moderator_client,
+                                                  moderator):
+        author_map = {
+            admin: admin_client,
+            user: user_client,
+            moderator: moderator_client
+        }
+&gt;       comments, reviews, titles = create_comments(admin_client, author_map)
+
+tests\test_06_comment.py:175: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests\utils.py:269: in create_comments
+    reviews, titles = create_reviews(admin_client, authors_map)
+tests\utils.py:254: in create_reviews
+    response = create_single_review(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = &lt;rest_framework.test.APIClient object at 0x000001CF10B248E0&gt;, title_id = 28, text = 'review number 1', score = 5
+
+    def create_single_review(client, title_id, text, score):
+        data = {'text': text, 'score': score}
+        response = client.post(
+            f'/api/v1/titles/{title_id}/reviews/', data=data
+        )
+        if response.status_code != HTTPStatus.CREATED:
+            print(f"Failed to create review: {response.content}")
+&gt;       assert response.status_code == HTTPStatus.CREATED, (
+            'Если POST-запрос авторизованного пользователя к '
+            '`/api/v1/titles/{title_id}/reviews/` содержит корректные данные - '
+            'должен вернуться ответ со статусом 201.'
+        )
+E       AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.
+
+tests\utils.py:160: AssertionError</failure></testcase><testcase classname="tests.test_06_comment.Test06CommentAPI" name="test_05_comment_detail_admin_and_moderator" time="0.479"><failure message="AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.">self = &lt;tests.test_06_comment.Test06CommentAPI object at 0x000001CF10B24610&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF111E65E0&gt;, admin = &lt;ReviewsUser: TestAdmin&gt;
+user_client = &lt;rest_framework.test.APIClient object at 0x000001CF110D0910&gt;, user = &lt;ReviewsUser: TestUser&gt;
+moderator_client = &lt;rest_framework.test.APIClient object at 0x000001CF110D0C70&gt;, moderator = &lt;ReviewsUser: TestModerator&gt;
+
+    def test_05_comment_detail_admin_and_moderator(self, admin_client, admin,
+                                                   user_client, user,
+                                                   moderator_client,
+                                                   moderator):
+        author_map = {
+            admin: admin_client,
+            user: user_client,
+            moderator: moderator_client
+        }
+&gt;       comments, reviews, titles = create_comments(admin_client, author_map)
+
+tests\test_06_comment.py:254: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests\utils.py:269: in create_comments
+    reviews, titles = create_reviews(admin_client, authors_map)
+tests\utils.py:254: in create_reviews
+    response = create_single_review(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = &lt;rest_framework.test.APIClient object at 0x000001CF111E65E0&gt;, title_id = 30, text = 'review number 1', score = 5
+
+    def create_single_review(client, title_id, text, score):
+        data = {'text': text, 'score': score}
+        response = client.post(
+            f'/api/v1/titles/{title_id}/reviews/', data=data
+        )
+        if response.status_code != HTTPStatus.CREATED:
+            print(f"Failed to create review: {response.content}")
+&gt;       assert response.status_code == HTTPStatus.CREATED, (
+            'Если POST-запрос авторизованного пользователя к '
+            '`/api/v1/titles/{title_id}/reviews/` содержит корректные данные - '
+            'должен вернуться ответ со статусом 201.'
+        )
+E       AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.
+
+tests\utils.py:160: AssertionError</failure></testcase><testcase classname="tests.test_06_comment.Test06CommentAPI" name="test_06_comment_detail_not_auth" time="0.438"><failure message="AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.">self = &lt;tests.test_06_comment.Test06CommentAPI object at 0x000001CF11119400&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF11078880&gt;, admin = &lt;ReviewsUser: TestAdmin&gt;
+client = &lt;django.test.client.Client object at 0x000001CF11078BB0&gt;
+user_client = &lt;rest_framework.test.APIClient object at 0x000001CF11078610&gt;, user = &lt;ReviewsUser: TestUser&gt;
+moderator_client = &lt;rest_framework.test.APIClient object at 0x000001CF11078190&gt;, moderator = &lt;ReviewsUser: TestModerator&gt;
+
+    def test_06_comment_detail_not_auth(self, admin_client, admin, client,
+                                        user_client, user, moderator_client,
+                                        moderator):
+        author_map = {
+            admin: admin_client,
+            user: user_client,
+            moderator: moderator_client
+        }
+&gt;       comments, reviews, titles = create_comments(admin_client, author_map)
+
+tests\test_06_comment.py:308: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests\utils.py:269: in create_comments
+    reviews, titles = create_reviews(admin_client, authors_map)
+tests\utils.py:254: in create_reviews
+    response = create_single_review(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = &lt;rest_framework.test.APIClient object at 0x000001CF11078880&gt;, title_id = 32, text = 'review number 1', score = 5
+
+    def create_single_review(client, title_id, text, score):
+        data = {'text': text, 'score': score}
+        response = client.post(
+            f'/api/v1/titles/{title_id}/reviews/', data=data
+        )
+        if response.status_code != HTTPStatus.CREATED:
+            print(f"Failed to create review: {response.content}")
+&gt;       assert response.status_code == HTTPStatus.CREATED, (
+            'Если POST-запрос авторизованного пользователя к '
+            '`/api/v1/titles/{title_id}/reviews/` содержит корректные данные - '
+            'должен вернуться ответ со статусом 201.'
+        )
+E       AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.
+
+tests\utils.py:160: AssertionError</failure></testcase><testcase classname="tests.test_06_comment.Test06CommentAPI" name="test_07_comment_detail_put_not_allowed" time="0.498"><failure message="AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.">self = &lt;tests.test_06_comment.Test06CommentAPI object at 0x000001CF124C2160&gt;
+admin_client = &lt;rest_framework.test.APIClient object at 0x000001CF124C2EE0&gt;, admin = &lt;ReviewsUser: TestAdmin&gt;
+user_client = &lt;rest_framework.test.APIClient object at 0x000001CF124C2D90&gt;, user = &lt;ReviewsUser: TestUser&gt;
+moderator_client = &lt;rest_framework.test.APIClient object at 0x000001CF124C27C0&gt;, moderator = &lt;ReviewsUser: TestModerator&gt;
+
+    def test_07_comment_detail_put_not_allowed(
+            self, admin_client, admin, user_client, user, moderator_client,
+            moderator):
+        author_map = {
+            admin: admin_client,
+            user: user_client,
+            moderator: moderator_client
+        }
+&gt;       comments, reviews, titles = create_comments(admin_client, author_map)
+
+tests\test_06_comment.py:354: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests\utils.py:269: in create_comments
+    reviews, titles = create_reviews(admin_client, authors_map)
+tests\utils.py:254: in create_reviews
+    response = create_single_review(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = &lt;rest_framework.test.APIClient object at 0x000001CF124C2EE0&gt;, title_id = 34, text = 'review number 1', score = 5
+
+    def create_single_review(client, title_id, text, score):
+        data = {'text': text, 'score': score}
+        response = client.post(
+            f'/api/v1/titles/{title_id}/reviews/', data=data
+        )
+        if response.status_code != HTTPStatus.CREATED:
+            print(f"Failed to create review: {response.content}")
+&gt;       assert response.status_code == HTTPStatus.CREATED, (
+            'Если POST-запрос авторизованного пользователя к '
+            '`/api/v1/titles/{title_id}/reviews/` содержит корректные данные - '
+            'должен вернуться ответ со статусом 201.'
+        )
+E       AssertionError: Если POST-запрос авторизованного пользователя к `/api/v1/titles/{title_id}/reviews/` содержит корректные данные - должен вернуться ответ со статусом 201.
+
+tests\utils.py:160: AssertionError</failure></testcase></testsuite></testsuites>

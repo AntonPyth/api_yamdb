@@ -5,6 +5,7 @@ class IsAdminOrReadOnly(permissions.BasePermission):
     """
     Доступ к чтению разрешён всем, а изменение — только администраторам.
     """
+
     def has_permission(self, request, view):
         # Разрешаем доступ всем только для методов "чтения" (GET, HEAD, OPTIONS)
         if request.method in permissions.SAFE_METHODS:
@@ -18,15 +19,4 @@ class IsAdminOrReadOnly(permissions.BasePermission):
 
 class IsAdmin(permissions.BasePermission):
     def has_permission(self, request, view):
-        return (
-            request.user.is_authenticated
-            and request.user.is_admin
-        )
-
-
-class IsModerator(permissions.BasePermission):
-    def has_permission(self, request, view):
-        return (
-            request.user.is_authenticated
-            and request.user.is_moderator
-        )
+        return request.user.is_admin or request.user.is_superuser
