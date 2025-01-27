@@ -1,6 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
+from django.utils.timezone import now
+import json
+
+
+def validate_year(value):
+    current_year = now().year
+    if value > current_year:
+        raise ValidationError(
+            f'Год не может быть больше текущего ({current_year}).'
+        )
 
 
 class Category(models.Model):
@@ -22,6 +33,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    def to_json(self):
+        return json.loads(f'{{"name": "{self.name}", "slug": "{self.slug}"}}')
+
 
 class Genre(models.Model):
     name = models.CharField(
@@ -42,8 +56,11 @@ class Genre(models.Model):
     def __str__(self):
         return self.name
 
+    def to_json(self):
+        return json.loads(f'{{"name": "{self.name}", "slug": "{self.slug}"}}')
 
-class Title(models.Model):
+
+class Titles(models.Model):
     name = models.CharField(
         max_length=256,
         verbose_name="Название произведения",
@@ -51,9 +68,10 @@ class Title(models.Model):
     )
     year = models.PositiveIntegerField(
         verbose_name="Год создания",
-        blank=False
+        blank=False,
+        validators=[validate_year]
     )
-    
+
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
@@ -68,13 +86,9 @@ class Title(models.Model):
         verbose_name="Категория"
     )
 
-    description = models.TextField(  # Новое поле description
-        verbose_name="Описание произведения",
-        blank=True,  # Позволяет оставлять поле пустым
-        null=True  # Позволяет сохранить NULL, если описание отсутствует
-    )
-    '''description = models.TextField(blank=True, verbose_name="Описание")
-    rating = models.PositiveIntegerField(
+    description = models.TextField(blank=True, verbose_name="Описание")
+    genre = models.ManyToManyField(Genre, through='Genre_title')
+    '''rating = models.PositiveIntegerField(
         default=0,
         verbose_name="Рейтинг",
         validators=[MinValueValidator(1), MaxValueValidator(10)]
@@ -92,7 +106,7 @@ class Title(models.Model):
 
 class Genre_title(models.Model):
     title = models.ForeignKey(
-        Title,
+        Titles,
         on_delete=models.CASCADE,
         related_name='title',
         verbose_name="Название произведения"
@@ -103,7 +117,7 @@ class Genre_title(models.Model):
         # При удалении объекта жанра (Genre) не нужно удалять
         # Связанные с этим жанром произведения.
         null=True,
-        blank=True,
+        blank=False,
         related_name='genre_titles',
         verbose_name="Жанр произведения"
     )
@@ -182,7 +196,6 @@ class ReviewsUser(AbstractUser):
     def is_user(self):
         return self.role == self.USER
 
-
     '''description = models.TextField(blank=True, verbose_name="Описание")
     rating = models.PositiveIntegerField(
         default=0,
@@ -193,7 +206,7 @@ class ReviewsUser(AbstractUser):
 
 class Review(models.Model):
     title = models.ForeignKey(
-        Title,
+        Titles,
         on_delete=models.CASCADE,
         related_name='reviews',
         verbose_name='Произведение'

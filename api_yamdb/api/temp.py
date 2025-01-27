@@ -1,26 +1,24 @@
+
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import ValidationError
 from .filters import TitlesFilter
-from reviews.models import Category, Genre, Titles, Review, Comment
+from reviews.models import Category, Genre, Titles
+from .serializers import CategorySerializer, GenreSerializer, TitlesSerializer
 from .utils import send_verification_email, generate_verification_code
 from rest_framework.pagination import LimitOffsetPagination
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import status, filters, viewsets, mixins, permissions
+from rest_framework import status, filters, viewsets, mixins
 from rest_framework.decorators import action
 from .permissions import IsAdminOrReadOnly, IsAdmin
 from .serializers import (
-    CategorySerializer, GenreSerializer, TitlesSerializer,
     UserRegistrationSerializer, UsersSerializer,
-    UpdateUsersSerializer, TokenSerializer,
-    ReviewSerializer, CommentSerializer
+    UpdateUsersSerializer, TokenSerializer
 )
+
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.exceptions import MethodNotAllowed
-
-
-User = get_user_model()
 
 
 class CategoryViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin,
@@ -131,6 +129,9 @@ class TitlesViewSet(ModelViewSet):
         raise MethodNotAllowed(request.method)
 
 
+User = get_user_model()
+
+
 class UserRegistrationViewSet(
     mixins.CreateModelMixin, viewsets.GenericViewSet
 ):
@@ -170,7 +171,6 @@ class UsersViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('username',)
     lookup_field = 'username'
-    http_method_names = ['get', 'post', 'patch', 'delete']
 
     @action(
         detail=False, methods=['get'], url_path='me',
@@ -186,21 +186,3 @@ class UsersViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-
-
-class ReviewViewSet(viewsets.ModelViewSet):
-    queryset = Review.objects.all()
-    serializer_class = ReviewSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
-
-
-class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)

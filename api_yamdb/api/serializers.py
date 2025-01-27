@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from reviews.models import Category, Genre, Title, Review, Comment
+from reviews.models import Category, Comment, Genre, Titles, Review, Genre_title
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework.validators import UniqueValidator
@@ -36,13 +36,24 @@ class GenreSerializer(serializers.ModelSerializer):
         return value
 
 
-class TitleSerializer(serializers.ModelSerializer):
-    category = CategorySerializer(read_only=True)
-    genre = GenreSerializer(many=True, read_only=True)
+class SlugJsonRelatedField(serializers.SlugRelatedField):
+    def __init__(self, slug_field=None, **kwargs):
+        super().__init__(slug_field, **kwargs)
+
+    def to_representation(self, obj):
+        return obj.to_json()
+
+
+class TitlesSerializer(serializers.ModelSerializer):
+    category = SlugJsonRelatedField(
+        slug_field='slug', queryset=Category.objects.all())
+
+    genre = SlugJsonRelatedField(
+        slug_field='slug', queryset=Genre.objects.all(), many=True)
 
     class Meta:
-        model = Title
-        fields = '__all__'
+        fields = ('id', 'name', 'genre', 'category', 'year', 'description')
+        model = Titles
 
 
 class TokenSerializer(serializers.Serializer):
@@ -123,7 +134,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         slug_field='name',
         read_only=True
     )
-  
+
     class Meta:
         model = Review
         fields = ['id', 'author', 'title', 'text', 'score', 'pub_date']

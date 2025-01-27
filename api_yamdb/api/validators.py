@@ -2,7 +2,7 @@ import re
 from rest_framework.serializers import ValidationError
 
 
-PATTERN = r'^[\w.@+-]+$'
+PATTERN = r'^[\w.@+-]+\Z'
 
 
 def validate_username(value):
