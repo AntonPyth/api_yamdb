@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Avg
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
@@ -60,7 +61,7 @@ class Genre(models.Model):
         return json.loads(f'{{"name": "{self.name}", "slug": "{self.slug}"}}')
 
 
-class Titles(models.Model):
+class Title(models.Model):
     name = models.CharField(
         max_length=256,
         verbose_name="Название произведения",
@@ -82,7 +83,7 @@ class Titles(models.Model):
         # Становилось NULL, а не удалялось произведение.
         null=True,
         blank=True,
-        related_name='titles',
+        related_name='Title',
         verbose_name="Категория"
     )
 
@@ -97,16 +98,22 @@ class Titles(models.Model):
     class Meta:
         verbose_name = "Произведение"
         verbose_name_plural = "Произведения"
-        default_related_name = "titles"
+        default_related_name = "Title"
         ordering = ["name"]
 
     def __str__(self):
         return self.name
 
+    @property
+    def rating(self):
+        return (
+            self.reviews.aggregate(average_score=Avg('score'))['average_score']
+        )
+
 
 class Genre_title(models.Model):
     title = models.ForeignKey(
-        Titles,
+        Title,
         on_delete=models.CASCADE,
         related_name='title',
         verbose_name="Название произведения"
@@ -118,7 +125,7 @@ class Genre_title(models.Model):
         # Связанные с этим жанром произведения.
         null=True,
         blank=False,
-        related_name='genre_titles',
+        related_name='genre_Title',
         verbose_name="Жанр произведения"
     )
 
@@ -206,7 +213,7 @@ class ReviewsUser(AbstractUser):
 
 class Review(models.Model):
     title = models.ForeignKey(
-        Titles,
+        Title,
         on_delete=models.CASCADE,
         related_name='reviews',
         verbose_name='Произведение'

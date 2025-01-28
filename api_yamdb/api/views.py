@@ -1,8 +1,8 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
-from .filters import TitlesFilter
-from reviews.models import Category, Genre, Titles, Review, Comment
+from .filters import TitleFilter
+from reviews.models import Category, Genre, Title, Review, Comment
 from .utils import send_verification_email, generate_verification_code
 from rest_framework.pagination import LimitOffsetPagination
 from django.contrib.auth import get_user_model
@@ -12,7 +12,7 @@ from rest_framework import status, filters, viewsets, mixins, permissions
 from rest_framework.decorators import action
 from .permissions import IsAdminOrReadOnly, IsAdmin, IsAuthorOrStaffOrReadOnly
 from .serializers import (
-    CategorySerializer, GenreSerializer, TitlesSerializer,
+    CategorySerializer, GenreSerializer, TitleSerializer,
     UserRegistrationSerializer, UsersSerializer,
     UpdateUsersSerializer, TokenSerializer,
     ReviewSerializer, CommentSerializer
@@ -94,13 +94,13 @@ class GenreViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin,
         return super().destroy(request, *args, **kwargs)
 
 
-class TitlesViewSet(ModelViewSet):
-    queryset = Titles.objects.all()
-    serializer_class = TitlesSerializer
+class TitleViewSet(ModelViewSet):
+    queryset = Title.objects.all()
+    serializer_class = TitleSerializer
     permission_classes = [IsAdminOrReadOnly]
     pagination_class = LimitOffsetPagination
     filter_backends = (DjangoFilterBackend,)
-    filterset_class = TitlesFilter
+    filterset_class = TitleFilter
 
     def create(self, request, *args, **kwargs):
         name = request.data.get('name')
@@ -198,7 +198,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
     @property
     def title_object(self):
-        return get_object_or_404(Titles, id=self.kwargs['title_id'])
+        return get_object_or_404(Title, id=self.kwargs['title_id'])
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user, title=self.title_object)

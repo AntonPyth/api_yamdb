@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from reviews.models import Category, Comment, Genre, Titles, Review, Genre_title
+from reviews.models import Category, Comment, Genre, Title, Review, Genre_title
 from django.forms import ValidationError
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
@@ -46,7 +46,7 @@ class SlugJsonRelatedField(serializers.SlugRelatedField):
         return obj.to_json()
 
 
-class TitlesSerializer(serializers.ModelSerializer):
+class TitleSerializer(serializers.ModelSerializer):
     category = SlugJsonRelatedField(
         slug_field='slug', queryset=Category.objects.all())
 
@@ -54,8 +54,8 @@ class TitlesSerializer(serializers.ModelSerializer):
         slug_field='slug', queryset=Genre.objects.all(), many=True)
 
     class Meta:
-        fields = ('id', 'name', 'genre', 'category', 'year', 'description')
-        model = Titles
+        fields = ('id', 'name', 'genre', 'category', 'year', 'description', 'rating')
+        model = Title
 
 
 class TokenSerializer(serializers.Serializer):
@@ -121,7 +121,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         if request.method != 'POST':
             return attrs
         title_id = self.context.get('view').kwargs.get('title_id')
-        title = get_object_or_404(Titles, pk=title_id)
+        title = get_object_or_404(Title, pk=title_id)
         if (
             not Review.objects
             .filter(title=title, author=request.user)
