@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from reviews.models import Category, Comment, Genre, Title, Review, Genre_title
+from reviews.models import Category, Comment, Genre, Title, Review
 from django.forms import ValidationError
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
