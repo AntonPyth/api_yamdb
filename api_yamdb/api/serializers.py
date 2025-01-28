@@ -54,7 +54,15 @@ class TitleSerializer(serializers.ModelSerializer):
         slug_field='slug', queryset=Genre.objects.all(), many=True)
 
     class Meta:
-        fields = ('id', 'name', 'genre', 'category', 'year', 'description', 'rating')
+        fields = (
+            'id',
+            'name',
+            'genre',
+            'category',
+            'year',
+            'description',
+            'rating'
+        )
         model = Title
 
 
