@@ -7,7 +7,7 @@ class IsAdminOrReadOnly(permissions.BasePermission):
     """
 
     def has_permission(self, request, view):
-        # Разрешаем доступ всем только для методов "чтения" 
+        # Разрешаем доступ всем только для методов "чтения"
         # таких как (GET, HEAD, OPTIONS)
         if request.method in permissions.SAFE_METHODS:
             return True
