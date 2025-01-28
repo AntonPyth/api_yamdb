@@ -9,7 +9,8 @@ ReviewsUser, Review, Comment
 class CategoryAdmin(admin.ModelAdmin):
     # Отображаем поля на странице списка объектов
     list_display = ('name', 'slug')  # какие поля отображать в таблице
-    search_fields = ('name', 'slug')  # по каким полям будет работать поиск
+    # по каким полям будет работать поиск
+    search_fields = ('name', 'slug')  
     list_filter = ('slug',)  # добавляем фильтрацию по slug
     ordering = ('name',)  # сортируем по полю name
     # автоматически генерировать slug на основе name
