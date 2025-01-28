@@ -145,17 +145,17 @@ class ReviewsUser(AbstractUser):
         verbose_name='Электронная почта'
     )
     username = models.CharField(
-        max_length=254,
+        max_length=150,
         unique=True,
         verbose_name='Логин'
     )
     first_name = models.CharField(
-        max_length=254,
+        max_length=150,
         blank=True,
         verbose_name='Имя'
     )
     last_name = models.CharField(
-        max_length=254,
+        max_length=150,
         blank=True,
         verbose_name='Фамилия'
     )

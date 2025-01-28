@@ -194,6 +194,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
     permission_classes = [
         IsAuthenticatedOrReadOnly, IsAuthorOrStaffOrReadOnly
     ]
+    http_method_names = ['get', 'post', 'patch', 'delete']
 
     @property
     def title_object(self):
@@ -211,6 +212,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [
         IsAuthenticatedOrReadOnly, IsAuthorOrStaffOrReadOnly
     ]
+    http_method_names = ['get', 'post', 'patch', 'delete']
 
     @property
     def review_object(self):

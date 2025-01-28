@@ -85,7 +85,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             message="Этот email уже используется")]
     )
     username = serializers.CharField(
-        max_length=254,
+        max_length=150,
         required=True,
         validators=[UniqueValidator(
             queryset=User.objects.all(),
