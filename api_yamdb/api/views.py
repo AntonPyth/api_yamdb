@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 from .filters import TitleFilter
-from reviews.models import Category, Genre, Title, Review, Comment
+from reviews.models import Category, Genre, Title, Review
 from .utils import send_verification_email, generate_verification_code
 from rest_framework.pagination import LimitOffsetPagination
 from django.contrib.auth import get_user_model
