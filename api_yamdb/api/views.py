@@ -115,9 +115,7 @@ class TitleViewSet(ModelViewSet):
         if not name or not year or not genre or not category:
             raise ValidationError(
                 {
-                    'detail: 'Поля `name`,
-                    `year`,
-                    `genre` и `category` являются обязательными.'
+                    "detail": "Поля name, year, genre и category являются обязательными."
                 }
             )
 
