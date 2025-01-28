@@ -27,8 +27,6 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'reviews.apps.ReviewsConfig',
     'django_filters',
-    
-    #'reviews'
 ]
 
 REST_FRAMEWORK = {
