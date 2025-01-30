@@ -89,11 +89,6 @@ class Title(models.Model):
 
     description = models.TextField(blank=True, verbose_name="Описание")
     genre = models.ManyToManyField(Genre, through='Genre_title')
-    '''rating = models.PositiveIntegerField(
-        default=0,
-        verbose_name="Рейтинг",
-        validators=[MinValueValidator(1), MaxValueValidator(10)]
-    )'''
 
     class Meta:
         verbose_name = "Произведение"
@@ -111,7 +106,7 @@ class Title(models.Model):
         )
 
 
-class Genre_title(models.Model):
+class GenreTitle(models.Model):
     title = models.ForeignKey(
         Title,
         on_delete=models.CASCADE,
@@ -125,7 +120,7 @@ class Genre_title(models.Model):
         # Связанные с этим жанром произведения.
         null=True,
         blank=False,
-        related_name='genre_Title',
+        related_name='genre_title',
         verbose_name="Жанр произведения"
     )
 
@@ -142,9 +137,10 @@ class Genre_title(models.Model):
 
 
 class ReviewsUser(AbstractUser):
-    USER = 'user'
-    MODERATOR = 'moderator'
-    ADMIN = 'admin'
+    class Role(models.TextChoices):
+        USER = 'user', 'Пользователь'
+        MODERATOR = 'moderator', 'Модератор'
+        ADMIN = 'admin', 'Администратор'
 
     email = models.EmailField(
         max_length=254,
@@ -168,13 +164,9 @@ class ReviewsUser(AbstractUser):
     )
 
     role = models.CharField(
-        max_length=254,
-        choices=(
-            (USER, 'user'),
-            (MODERATOR, 'moderator'),
-            (ADMIN, 'admin'),
-        ),
-        default='user',
+        max_length=20,
+        choices=Role.choices,
+        default=Role.USER,
         verbose_name='Роль'
     )
     bio = models.TextField(
@@ -193,22 +185,15 @@ class ReviewsUser(AbstractUser):
 
     @property
     def is_admin(self):
-        return self.role == self.ADMIN or self.is_superuser
+        return self.role == self.Role.ADMIN or self.is_superuser
 
     @property
     def is_moderator(self):
-        return self.role == self.MODERATOR
+        return self.role == self.Role.MODERATOR
 
     @property
     def is_user(self):
-        return self.role == self.USER
-
-    '''description = models.TextField(blank=True, verbose_name="Описание")
-    rating = models.PositiveIntegerField(
-        default=0,
-        verbose_name="Рейтинг",
-        validators=[MinValueValidator(1), MaxValueValidator(10)]
-    )'''
+        return self.role == self.Role.USER
 
 
 class Review(models.Model):

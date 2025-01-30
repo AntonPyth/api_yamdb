@@ -7,13 +7,13 @@ from .views import (
 
 
 router = DefaultRouter()
-router.register(r'categories', CategoryViewSet, basename='categories')
-router.register(r'genres', GenreViewSet, basename='genres')
-router.register(r'titles', TitleViewSet, basename='Title')
-router.register(r'users', UsersViewSet, basename='users')
-router.register(r'auth/token', UserVerificationViewSet, basename='token')
+router.register('categories', CategoryViewSet, basename='categories')
+router.register('genres', GenreViewSet, basename='genres')
+router.register('titles', TitleViewSet, basename='Title')
+router.register('users', UsersViewSet, basename='users')
+router.register('auth/token', UserVerificationViewSet, basename='token')
 router.register(
-    r'auth/signup', UserRegistrationViewSet, basename='registration')
+    'auth/signup', UserRegistrationViewSet, basename='registration')
 router.register(r'^titles/(?P<title_id>\d+)/reviews',
                 ReviewViewSet, basename='reviews')
 router.register(

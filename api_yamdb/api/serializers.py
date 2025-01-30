@@ -125,7 +125,9 @@ class ReviewSerializer(serializers.ModelSerializer):
     author = SlugRelatedField(slug_field='username', read_only=True)
 
     def validate(self, attrs):
-        request = self.context['request']
+        request = self.context.get('request')
+        if request is None:
+            raise ValidationError('Не удалось получить объект запроса!')
         if request.method != 'POST':
             return attrs
         title_id = self.context.get('view').kwargs.get('title_id')
