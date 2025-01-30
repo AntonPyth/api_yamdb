@@ -76,11 +76,6 @@ class Title(models.Model):
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
-        # При удалении объекта произведения Title должны удаляться
-        # Все отзывы к этому произведению и комментарии к ним.
-        # Использует on_delete=models.SET_NULL,
-        # Чтобы при удалении категории у произведения значение категории
-        # Становилось NULL, а не удалялось произведение.
         null=True,
         blank=True,
         related_name='Title',
@@ -88,7 +83,7 @@ class Title(models.Model):
     )
 
     description = models.TextField(blank=True, verbose_name="Описание")
-    genre = models.ManyToManyField(Genre, through='Genre_title')
+    genre = models.ManyToManyField(Genre, through='GenreTitle')
 
     class Meta:
         verbose_name = "Произведение"
@@ -116,8 +111,6 @@ class GenreTitle(models.Model):
     genre = models.ForeignKey(
         Genre,
         on_delete=models.SET_NULL,
-        # При удалении объекта жанра (Genre) не нужно удалять
-        # Связанные с этим жанром произведения.
         null=True,
         blank=False,
         related_name='genre_title',

@@ -131,7 +131,7 @@ class TitleViewSet(ModelViewSet):
 
     def update(self, request, *args, **kwargs) -> Response:
         """Disallow full update (PUT) and allow partial update (PATCH)."""
-        if kwargs.get("partial", False):  # Use .get() instead of .pop()
+        if kwargs.get("partial", False):
             return super().update(request, *args, **kwargs)
 
         raise MethodNotAllowed(request.method)
